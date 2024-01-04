@@ -1,7 +1,14 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export default function Home({ navigation }) {
+// Define the type for your navigation prop
+type HomeProps = {
+  navigation: StackNavigationProp<any, any>;
+};
+
+// Your component now uses the HomeProps type
+export default function Home({ navigation }: HomeProps) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>홈</Text>
