@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from '@expo/vector-icons'; // 아이콘 라이브러리 import
 
 import SearchMain from "./screens/SearchMain";
-import RecommMain from "./screens/RecommMain";
+import RecommMain from "./screens/RecommendMain";
 import Home from "./screens/Home";
 import CommunityMain from "./screens/CommunityMain";
 import MyPageMain from "./screens/MyPageMain";
