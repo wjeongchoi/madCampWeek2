@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
-import { HomeTabScreenProps } from '../navigation/types';
 import { text } from '../styles';
+import { RootStackScreenProps } from '../navigation/types';
 
-export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})=> {
+export const ResultRecommend: React.FC<RootStackScreenProps<"MyKitchenState">> = ({navigation})=> {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={[text.sub1]}>검색</Text>
+      <Text style={[text.sub1]}>추천 결과</Text>
       <Button
         title= '만개의 레시피'
         onPress={() => navigation.navigate('ManRecipe')}
