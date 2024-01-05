@@ -3,6 +3,10 @@
 # dependencies
 node_modules/
 
+# pycache
+back/__pycache__/
+back/*/__pycache__/
+
 # environment file
 .env
 .env.develop
