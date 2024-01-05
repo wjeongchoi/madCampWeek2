@@ -3,11 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from '@expo/vector-icons'; // 아이콘 라이브러리 import
 
-import SearchMain from "./Screens/SearchMain";
-import RecommMain from "./Screens/RecommMain";
-import Home from "./Screens/Home";
-import CommunityMain from "./Screens/CommunityMain";
-import MyPageMain from "./Screens/MyPageMain";
+import SearchMain from "./screens/SearchMain";
+import RecommMain from "./screens/RecommMain";
+import Home from "./screens/Home";
+import CommunityMain from "./screens/CommunityMain";
+import MyPageMain from "./screens/MyPageMain";
 
 const Tab = createBottomTabNavigator();
 
