@@ -8,7 +8,7 @@ type HomeProps = {
 };
 
 // Your component now uses the HomeProps type
-export default function Home({ navigation }: HomeProps) {
+export const Home: React.FC<HomeProps> = ({ navigation }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>홈</Text>
@@ -30,4 +30,4 @@ export default function Home({ navigation }: HomeProps) {
       />
     </View>
   );
-}
+};
