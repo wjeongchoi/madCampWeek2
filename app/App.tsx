@@ -3,11 +3,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from '@expo/vector-icons'; // 아이콘 라이브러리 import
 
-import SearchMain from "./screens/SearchMain";
-import RecommMain from "./screens/RecommendMain";
-import Home from "./screens/Home";
-import CommunityMain from "./screens/CommunityMain";
-import MyPageMain from "./screens/MyPageMain";
+import { 
+  OwnRecipe,
+  CommunityMain,
+  Home,
+  UploadRecipe,
+  RecommendedKitchenState,
+  ResultRecommend,
+  SearchMain,
+  MyKitchenState,
+  MyPageMain,
+  RecommendMain,
+ } from "./screens";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +37,7 @@ export default function App() {
         />
         <Tab.Screen 
           name="추천" 
-          component={RecommMain} 
+          component={RecommendMain} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="md-flask" color={color} size={size} />
