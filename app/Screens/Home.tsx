@@ -5,6 +5,7 @@ import { HomeTabScreenProps } from '../navigation/types';
 import { text } from '../styles';
 
 
+
 export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

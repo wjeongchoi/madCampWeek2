@@ -6,7 +6,7 @@ export const getRequest = async (
   handleError?: (error: any) => void
 ) => {
   await axios
-    .get(`${process.env.REACT_APP_BACKEND_URL}/${url}`, {
+    .get(`127.0.0.1;8000/${url}`, {
       withCredentials: true,
     })
     .then((response) => handleSuccess(response.data))

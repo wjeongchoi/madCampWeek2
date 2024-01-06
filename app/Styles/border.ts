@@ -1,5 +1,4 @@
 import type { ViewStyle } from "react-native";
-
 import { mapColors } from "./color";
 
 /**
