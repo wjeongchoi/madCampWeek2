@@ -3,6 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { RootStack } from './navigation/RootStack';
 
+
 const fetchFonts = () => {
   return Font.loadAsync({
     "Pretendard-Regular": require("./assets/fonts/Pretendard-Regular.otf"),
