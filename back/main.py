@@ -3,7 +3,6 @@ from starlette.config import Config
 from fastapi import Depends, FastAPI, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 
-from fastapi_oauth_client import OAuthClient
 import crud, models.models as models, schemas.schemas as schemas
 from database import SessionLocal, engine
 
@@ -11,7 +10,7 @@ from database import SessionLocal, engine
 from router.oauth import oauth
 from router.users import user
 from router.recipes import recipe
-from router.ingrandiant import ingradiant
+from router.ingrendient import ingredient
 from router.cooker import cooker
 
 
@@ -24,11 +23,11 @@ config = Config(".env")
 
 
         
-app.include_router(oauth, prefix="/oauth")
-app.include_router(user, prefix="/users")
-app.include_router(recipe, prefix="/recipes")
-app.include_router(ingradiant, prefix="/ingradiants")
-app.include_router(cooker, prefix="/cookers")
+app.include_router(oauth, prefix="/oauth",tags=["auth"])
+app.include_router(user, prefix="/users",tags=["user"])
+app.include_router(recipe, prefix="/recipes",tags=["recipe"])
+app.include_router(ingredient, prefix="/ingredients",tags=["ingredient"])
+app.include_router(cooker, prefix="/cookers",tags=["cooker"])
 
 
 

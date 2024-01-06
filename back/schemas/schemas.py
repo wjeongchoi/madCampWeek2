@@ -44,14 +44,14 @@ class Recipe(RecipeBase):
         from_attributes = True
         
         
-# Ingradiant
-class IngradiantBase(BaseModel):
-    ingradiantName: str
+# ingredient
+class IngredientBase(BaseModel):
+    ingredientName: str
 
-class IngradiantCreate(IngradiantBase):
+class IngredientCreate(IngredientBase):
     pass
    
-class Ingradiant(IngradiantBase):
+class Ingredient(IngredientBase):
     class Config:
         from_attributes = True
         
