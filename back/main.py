@@ -3,7 +3,6 @@ from starlette.config import Config
 from fastapi import Depends, FastAPI, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 
-from fastapi_oauth_client import OAuthClient
 import crud, models.models as models, schemas.schemas as schemas
 from database import SessionLocal, engine
 
