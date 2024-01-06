@@ -6,23 +6,27 @@ from typing import List
 
 cooker = APIRouter()
 
-# cooker
+# cooker - 통과
 @cooker.post("/", response_model=schemas.Cooker)
 def create_cooker(cooker: schemas.CookerCreate, db: Session = Depends(get_db)):
-    db_ingradiant = crud.cooker(db, ingradiant_name=cooker.cookerName)
-    if db_ingradiant:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    return crud.cooker(db=db, cooker=cooker)
-
+    db_cooker = db.query(models.Cooker).filter(models.Cooker.cookerName == cooker.cookerName).first()
+    if db_cooker:
+        raise HTTPException(status_code=400, detail="cooker already registered")
+    db_cooker = models.Cooker(cookerID=cooker.cookerID,
+                              cookerName=cooker.cookerName)
+    db.add(db_cooker) 
+    db.commit() 
+    db.refresh(db_cooker) 
+    return db_cooker
 
 @cooker.get("/", response_model=List[schemas.Cooker])
 def get_cookers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    cookers = crud.cookers(db, skip=skip, limit=limit)
+    cookers = db.query(models.Cooker).offset(skip).limit(limit).all()
     return cookers
 
 @cooker.get("/{cooker_name}", response_model=schemas.Cooker)
 def get_cooker(cooker_name: int, db: Session = Depends(get_db)):
-    db_cooker = crud.cooker(db, cooker_name=cooker_name)
+    db_cooker = db.query(models.Cooker).filter(models.Cooker.cookerName == cooker.cookerName).first()
     if db_cooker is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_cooker

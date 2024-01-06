@@ -10,9 +10,9 @@ metadata = Base.metadata
 class Cooker(Base):
     __tablename__ = 'cookers'
 
-    cookerName = Column(String(100), nullable=False)
+    
     cookerID = Column(String(36), primary_key=True)
-
+    cookerName = Column(String(100), nullable=False)
     users = relationship('User', secondary='myCookers')
 
 
@@ -47,19 +47,19 @@ class Recipe(Base):
     modifiedTime = Column(Date)
     level = Column(SmallInteger)
 
-    users = relationship('User', secondary='likeRecipe')
-    users1 = relationship('User', secondary='myRecipe')
+    users = relationship('User', secondary='likeRecipes')
+    users1 = relationship('User', secondary='myRecipes')
 
 
 class User(Base):
     __tablename__ = 'users'
 
-    userID = Column(String(36), primary_key=True)
+    userID = Column(String(36), primary_key=True, nullable=False)
     email = Column(String(50))
     password = Column(String(100))
     name = Column(String(50), nullable=False)
     imgSrc = Column(String(100))
-    create_time = Column(DateTime, nullable=False)
+    createdTime = Column(DateTime, nullable=False)
 
 
 class CompleteRecipe(Base):
@@ -69,34 +69,44 @@ class CompleteRecipe(Base):
     ingredientID = Column(ForeignKey('ingredients.ingredientID'), primary_key=True, nullable=False)
     cookerID = Column(ForeignKey('cookers.cookerID'), primary_key=True, nullable=False, index=True)
 
-    cooker = relationship('Cooker')
+    cooker = relationship('Cooker' )
     ingredient = relationship('Ingredient')
     recipe = relationship('Recipe')
 
 
-t_likeRecipe = Table(
-    'likeRecipe', metadata,
-    Column('recipeID', ForeignKey('recipes.recipeID'), primary_key=True, nullable=False, index=True),
-    Column('userID', ForeignKey('users.userID'), primary_key=True, nullable=False)
-)
 
 
-t_myCookers = Table(
-    'myCookers', metadata,
-    Column('userID', ForeignKey('users.userID'), primary_key=True, nullable=False),
-    Column('cookerID', ForeignKey('cookers.cookerID'), primary_key=True, nullable=False, index=True)
-)
+class LikeRecipes(Base):
+    __tablename__ = "likeRecipes"
+
+    userID = Column(String(36), ForeignKey("users.userID"), primary_key=True)
+    recipeID = Column(String(36), ForeignKey('recipes.recipeID'), primary_key=True)
+    user = relationship("User")
+    recipe = relationship("Recipe")
+    
+class MyCookers(Base):
+    __tablename__ = "myCookers"
+
+    userID = Column(String(36), ForeignKey("users.userID"), primary_key=True)
+    cookerID = Column(String(36), ForeignKey("cookers.cookerID"), primary_key=True)
+    user = relationship("User")
+    cooker = relationship("Cooker")
+    
+
+class MyIngredients(Base):
+    __tablename__ = "myIngredients"
+
+    userID = Column(String(36), ForeignKey("users.userID"), primary_key=True)
+    ingredientID = Column(String(36), ForeignKey("ingredients.ingredientID"), primary_key=True)
+    user = relationship("User")
+    ingredient = relationship("Ingredient")
 
 
-t_myIngredients = Table(
-    'myIngredients', metadata,
-    Column('userID', ForeignKey('users.userID'), primary_key=True, nullable=False),
-    Column('ingredientID', ForeignKey('ingredients.ingredientID'), primary_key=True, nullable=False, index=True)
-)
 
+class MyRecipes(Base):
+    __tablename__ = "myRecipes"
 
-t_myRecipe = Table(
-    'myRecipe', metadata,
-    Column('recipeID', ForeignKey('recipes.recipeID'), primary_key=True, nullable=False, index=True),
-    Column('userID', ForeignKey('users.userID'), primary_key=True, nullable=False)
-)
+    userID = Column(String(36), ForeignKey("users.userID"), primary_key=True)
+    recipeID = Column(String(36), ForeignKey("recipes.recipeID"), primary_key=True)
+    user = relationship("User")
+    recipe = relationship("Recipe")

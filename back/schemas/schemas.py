@@ -1,19 +1,20 @@
 from pydantic import BaseModel # 객체 타입설정
 from datetime import date
-from typing import Optional
-from datetime import date
+from typing import Optional, List
 import uuid
+
 
 # User
 class UserBase(BaseModel):
-    imageSrc: Optional[str] = None
+    userID: Optional[str] = uuid.uuid4()
+    imgSrc: Optional[str] = None
     createdTime: Optional[date] = date.today()
-    deletedTime: Optional[date] = None
-
-class UserCreate(UserBase):
     email: str
-    password: str
     name: str
+    
+class UserCreate(UserBase):
+    password: str
+
    
 class User(UserBase):
     class Config:
@@ -26,15 +27,18 @@ class UserUpdate(UserBase):
         
 # Recipe
 class RecipeBase(BaseModel):
-    recipeId: Optional[str] = uuid.uuid4()
+    recipeID: Optional[str] = uuid.uuid4()
     title: str
     subTitle: str
-    manId: Optional[str] = None
+    manId: Optional[int] = None
     cookTime: Optional[int] = None
     like: Optional[int] = 0
-    level: Optional[int] = 0
     writedTime: Optional[date] = date.today()
     modifiedTime: Optional[date] = date.today()
+    level: Optional[int] = 0
+    
+    # users_like: Optional[List[str]] = []
+    # users_my: Optional[List[str]] = []
 
 class RecipeCreate(RecipeBase):
     pass
@@ -46,7 +50,10 @@ class Recipe(RecipeBase):
         
 # ingredient
 class IngredientBase(BaseModel):
+    ingredientID: Optional[str] = uuid.uuid4()
     ingredientName: str
+    
+    
 
 class IngredientCreate(IngredientBase):
     pass
@@ -57,7 +64,9 @@ class Ingredient(IngredientBase):
         
 # Cooker
 class CookerBase(BaseModel):
+    cookerID: Optional[str] = uuid.uuid4()
     cookerName: str
+    
 
 class CookerCreate(CookerBase):
     pass
@@ -67,17 +76,17 @@ class Cooker(CookerBase):
         from_attributes = True
         
 
-
-
 # Recipe detail
-class RecipeDetailBase(BaseModel):
+class DetailRecipeBase(BaseModel):
+    detailRecipeID: Optional[str] = uuid.uuid4()
     description: Optional[str] = ""
     order: Optional[int] = 1
     imageSrc: Optional[str] = None
+    recipeID: Optional[str] = None
 
-class RecipeDetailCreate(RecipeDetailBase):
+class DetailRecipeCreate(DetailRecipeBase):
     pass
    
-class RecipeDetail(RecipeDetailBase):
+class DetailRecipe(DetailRecipeBase):
     class Config:
         from_attributes = True
