@@ -53,20 +53,20 @@ def create_recipe(db: Session, recipe: schemas.RecipeCreate):
     return db_recipe
 
 
-# Ingradiant
-def ingradiant(db: Session, ingradiant_name: str):
-    return db.query(models.Ingradiant).filter(models.Ingradiant.ingradiantName == ingradiant_name).first()
+# Ingredient
+def ingredient(db: Session, ingredient_name: str):
+    return db.query(models.Ingredient).filter(models.Ingredient.ingredientName == ingredient_name).first()
 
 
-def ingradiants(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Ingradiant).offset(skip).limit(limit).all()
+def ingredients(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Ingredient).offset(skip).limit(limit).all()
 
-def create_ingradiant(db: Session, ingradiant: schemas.IngradiantCreate):
-    db_ingradiant = models.Ingradiant(ingradiant=ingradiant.ingradiantName)
-    db.add(db_ingradiant) 
+def create_ingredient(db: Session, ingredient: schemas.IngredientCreate):
+    db_ingredient = models.Ingredient(ingredient=ingredient.ingredientName)
+    db.add(db_ingredient) 
     db.commit() 
-    db.refresh(db_ingradiant) 
-    return db_ingradiant
+    db.refresh(db_ingredient) 
+    return db_ingredient
 
 
 # Cooker
@@ -78,7 +78,7 @@ def cookers(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Cooker).offset(skip).limit(limit).all()
 
 def create_cooker(db: Session, cooker: schemas.CookerCreate):
-    db_cooker = models.Ingradiant(cooker=cooker.cookerName)
+    db_cooker = models.Ingredient(cooker=cooker.cookerName)
     db.add(db_cooker) 
     db.commit() 
     db.refresh(db_cooker) 
