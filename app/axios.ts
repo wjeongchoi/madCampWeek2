@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_URL } from '@env'
 
 export const getRequest = async (
   url: string,
@@ -6,7 +7,7 @@ export const getRequest = async (
   handleError?: (error: any) => void
 ) => {
   await axios
-    .get(`127.0.0.1;8000/${url}`, {
+    .get(`${API_URL}/${url}`, {
       withCredentials: true,
     })
     .then((response) => handleSuccess(response.data))
@@ -18,15 +19,18 @@ export const getRequest = async (
     });
 };
 
+
 export const postRequest = async (
   url: string,
   data: any,
   handleSuccess: (responseData: any) => void,
   handleError?: (error: any) => void
 ) => {
+
   try {
+    console.log('request', `${API_URL}/${url}`);
     const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/${url}`,
+      `${API_URL}/${url}`,
       data,
       { withCredentials: true }
     );
