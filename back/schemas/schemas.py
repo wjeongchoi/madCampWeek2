@@ -15,47 +15,23 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
-   
+class UserUpdate(UserBase):
+    password: str
+    
 class User(UserBase):
     class Config:
         from_attributes = True
         
-class UserUpdate(UserBase):
-    password: str
-    name: str
-        
-        
-# Recipe
-class RecipeBase(BaseModel):
-    recipeID: Optional[str] = uuid.uuid4()
-    title: str
-    subTitle: str
-    manId: Optional[int] = None
-    cookTime: Optional[int] = None
-    like: Optional[int] = 0
-    writedTime: Optional[date] = date.today()
-    modifiedTime: Optional[date] = date.today()
-    level: Optional[int] = 0
-    
-    # users_like: Optional[List[str]] = []
-    # users_my: Optional[List[str]] = []
 
-class RecipeCreate(RecipeBase):
-    pass
-   
-class Recipe(RecipeBase):
-    class Config:
-        from_attributes = True
-        
-        
 # ingredient
 class IngredientBase(BaseModel):
     ingredientID: Optional[str] = uuid.uuid4()
     ingredientName: str
     
-    
-
 class IngredientCreate(IngredientBase):
+    pass
+
+class IngredientUpdate(IngredientBase):
     pass
    
 class Ingredient(IngredientBase):
@@ -70,10 +46,39 @@ class CookerBase(BaseModel):
 
 class CookerCreate(CookerBase):
     pass
+
+class CookerUpdate(CookerBase):
+    pass
    
 class Cooker(CookerBase):
     class Config:
+        from_attributes = True  
+        
+# Recipe
+class RecipeBase(BaseModel):
+    recipeID: Optional[str] = uuid.uuid4()
+    title: str
+    subTitle: str
+    manId: Optional[int] = None
+    cookTime: Optional[int] = None
+    like: Optional[int] = 0
+    writedTime: Optional[date] = date.today()
+    modifiedTime: Optional[date] = date.today()
+    level: Optional[int] = 0
+
+class RecipeCreate(RecipeBase):
+    ingredients: Optional[List[IngredientCreate]] = []
+    cookers: Optional[List[CookerCreate]] = []
+    
+
+class RecipeUpdate(RecipeBase):
+    isModify: bool
+    
+   
+class Recipe(RecipeBase):
+    class Config:
         from_attributes = True
+
         
 
 # Recipe detail
@@ -81,10 +86,13 @@ class DetailRecipeBase(BaseModel):
     detailRecipeID: Optional[str] = uuid.uuid4()
     description: Optional[str] = ""
     order: Optional[int] = 1
-    imageSrc: Optional[str] = None
+    imgSrc: Optional[str] = None
     recipeID: Optional[str] = None
 
 class DetailRecipeCreate(DetailRecipeBase):
+    pass
+
+class DetailRecipeUpdate(DetailRecipeBase):
     pass
    
 class DetailRecipe(DetailRecipeBase):

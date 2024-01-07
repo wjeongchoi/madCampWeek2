@@ -1,10 +1,9 @@
 from typing import List
 from starlette.config import Config
-from fastapi import Depends, FastAPI, HTTPException, APIRouter
-from sqlalchemy.orm import Session
+from fastapi import Depends, FastAPI
 
-import crud, models.models as models, schemas.schemas as schemas
-from database import SessionLocal, engine
+import  models.models as models, schemas.schemas as schemas
+from database import engine
 
 
 from router.oauth import oauth
@@ -12,8 +11,6 @@ from router.users import user
 from router.recipes import recipe
 from router.ingrendient import ingredient
 from router.cooker import cooker
-
-
 
 # 데이터베이스 테이블 생성하기
 models.Base.metadata.create_all(bind=engine)
