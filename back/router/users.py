@@ -330,7 +330,7 @@ def delete_user_cooker(user_id: str, cooker_name: str, db: Session = Depends(get
 config = Config(".env")
 
 
-KAKAO_REDIRECT_URI = "http://www.localhost:8000/oauth/kakao"
+KAKAO_REDIRECT_URI = config("KAKAO_REDIRECT_URI")
 KAKAO_CLIENT_ID = config("KAKAO_KEY")
 KAKAO_CLIENT_SECRET = config("KAKAO_CLIENT_SECRET")
 
