@@ -1,4 +1,4 @@
-from pydantic import BaseModel # 객체 타입설정
+from pydantic import UUID4, BaseModel # 객체 타입설정
 from datetime import date
 from typing import Optional, List
 import uuid
@@ -98,3 +98,12 @@ class DetailRecipeUpdate(DetailRecipeBase):
 class DetailRecipe(DetailRecipeBase):
     class Config:
         from_attributes = True
+
+class UserIngredientResponse(BaseModel):
+    message: str
+
+class RecipeLike(BaseModel):
+    recipeID: UUID4  # or another type, depending on your ID structure
+
+class LikeRecipeResponse(BaseModel):
+    message: str
