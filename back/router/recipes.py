@@ -1,82 +1,106 @@
-from fastapi import Depends, HTTPException, APIRouter
-import  models.models as models, schemas.schemas as schemas
+from fastapi import Depends, HTTPException, APIRouter, Query
+import models.models as models, schemas.schemas as schemas
 from sqlalchemy.orm import Session
 from database import get_db
 from typing import List
-from .ingrendient import create_ingredient
-from .cooker import create_cooker
 
 recipe = APIRouter()
 
-
-### CRETAE ### 
-# create recipe
+### CREATE ### 
+# Create recipe
 @recipe.post("/", response_model=schemas.Recipe)
-def create_recipe(recipe: schemas.RecipeCreate,
-                  db: Session = Depends(get_db)):
-    db_recipe = db.query(models.Recipe).filter(models.Recipe.recipeID == recipe.recipeID).first()
+def create_recipe(recipe_data: schemas.RecipeCreate, db: Session = Depends(get_db)):
+    # Check if recipe already exists
+    db_recipe = db.query(models.Recipe).filter(models.Recipe.recipeID == recipe_data.recipeID).first()
     if db_recipe:
-        raise HTTPException(status_code=400, detail="recipe already existed")
-    db_recipe = models.Recipe(
-                          recipeID=recipe.recipeID,
-                          title=recipe.title, 
-                          subTitle=recipe.subTitle, 
-                          manId=recipe.manId, 
-                          cookTime=recipe.cookTime, 
-                          like=recipe.like, 
-                          writedTime=recipe.writedTime,
-                          modifiedTime=recipe.modifiedTime,
-                          level=recipe.level)
-    for ingredient in recipe.ingredients:
-        db_ingredient = db.query(models.Ingredient).filter(models.Ingredient.ingredientName == ingredient.ingredientName).first()
-        if db_ingredient is None:
-            db_ingredient = models.Ingredient(ingredientID=ingredient.ingredientID,
-                                      ingredientName=ingredient.ingredientName)
-            db.add(db_ingredient) 
-        db_recipe_with_ingredient = models.RecipeWithIngredient(recipeID=db_recipe.recipeID,
-                                                                ingredientID=db_ingredient.ingredientID)
-        db.add(db_recipe_with_ingredient) 
-    for cooker in recipe.cookers:
-        db_cooker = db.query(models.Cooker).filter(models.Cooker.cookerName == cooker.cookerName).first()
-        if db_cooker is None:
-            db_cooker = models.Cooker(cookerID=cooker.cookerID,
-                                    cookerName=cooker.cookerName)
-            db.add(db_cooker) 
-        db_recipe_with_cooker = models.RecipeWithCooker(
-                            recipeID=db_recipe.recipeID,
-                            cookerID=db_cooker.cookerID)
-        db.add(db_recipe_with_cooker) 
-    db.add(db_recipe) 
-    db.commit() 
-    return db_recipe
+        raise HTTPException(status_code=400, detail="Recipe already exists")
 
-# create detail recipe
+    # Create new recipe object
+    new_recipe = models.Recipe(
+        recipeID=recipe_data.recipeID,
+        title=recipe_data.title,
+        subTitle=recipe_data.subTitle,
+        manId=recipe_data.manId,
+        cookTime=recipe_data.cookTime,
+        like=recipe_data.like,
+        writedTime=recipe_data.writedTime,
+        modifiedTime=recipe_data.modifiedTime,
+        level=recipe_data.level
+    )
+
+    db.add(new_recipe)
+    db.commit()
+    db.refresh(new_recipe)
+
+    # Handling ingredients
+    for ingredient_data in recipe_data.ingredients:
+        db_ingredient = db.query(models.Ingredient).filter(models.Ingredient.ingredientID == ingredient_data.ingredientID).first()
+        if not db_ingredient:
+            db_ingredient = models.Ingredient(ingredientID=ingredient_data.ingredientID, ingredientName=ingredient_data.ingredientName)
+            db.add(db_ingredient)
+            db.commit()
+            db.refresh(db_ingredient)
+        existing_association = db.execute(models.t_recipeWithIngredient.select().where(
+            models.t_recipeWithIngredient.c.recipeID == new_recipe.recipeID,
+            models.t_recipeWithIngredient.c.ingredientID == db_ingredient.ingredientID
+        )).fetchone()
+
+        if not existing_association:
+            association = models.t_recipeWithIngredient.insert().values(recipeID=new_recipe.recipeID, ingredientID=db_ingredient.ingredientID)
+            db.execute(association)
+
+    # Handling cookers
+    for cooker_data in recipe_data.cookers:
+        db_cooker = db.query(models.Cooker).filter(models.Cooker.cookerID == cooker_data.cookerID).first()
+        if not db_cooker:
+            db_cooker = models.Cooker(cookerID=cooker_data.cookerID, cookerName=cooker_data.cookerName)
+            db.add(db_cooker)
+            db.commit()
+            db.refresh(db_cooker)
+        existing_association = db.execute(models.t_recipeWithCooker.select().where(
+            models.t_recipeWithCooker.c.recipeID == new_recipe.recipeID,
+            models.t_recipeWithCooker.c.ingredientID == db_ingredient.cookerID
+        )).fetchone()
+
+        if not existing_association:
+            association = models.t_recipeWithCooker.insert().values(recipeID=new_recipe.recipeID, ingredientID=db_cooker.cookerID)
+            db.execute(association)
+
+    db.commit()
+
+    return new_recipe
+
 @recipe.post("/{recipe_id}/detail", response_model=schemas.DetailRecipe)
-def create_detail_recipe(recipe_id: str, detailRecipe: schemas.DetailRecipeCreate, db: Session = Depends(get_db)):
+def create_recipe_detail(recipe_id: str, detail_data: schemas.DetailRecipeCreate, db: Session = Depends(get_db)):
+    # Check if the recipe exists
     db_recipe = db.query(models.Recipe).filter(models.Recipe.recipeID == recipe_id).first()
-    if db_recipe is None:
-        raise HTTPException(status_code=400, detail="recipe not existed")
+    if not db_recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
 
-    db_detail_recipe = models.DetailRecipe(
-                        detailRecipeID=detailRecipe.detailRecipeID,
-                        description=detailRecipe.description, 
-                        order=detailRecipe.order, 
-                        imgSrc=detailRecipe.imgSrc, 
-                        recipeID=db_recipe.recipeID
-                        )
-    db.add(db_detail_recipe) 
-    db.commit() 
-    db.refresh(db_detail_recipe) 
-    return db_detail_recipe
+    # Create new recipe detail object
+    new_detail = models.DetailRecipe(
+        detailRecipeID=detail_data.detailRecipeID,
+        description=detail_data.description,
+        order=detail_data.order,
+        imgSrc=detail_data.imgSrc,
+        recipeID=recipe_id
+    )
+
+    db.add(new_detail)
+    db.commit()
+    db.refresh(new_detail)
+
+    return new_detail
+
 
 ### READ ###
-# get all recipes
+# Get all recipes
 @recipe.get("/", response_model=List[schemas.Recipe])
 def get_recipes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     recipes = db.query(models.Recipe).offset(skip).limit(limit).all()
     return recipes
 
-# get recipe
+# Get recipe by ID
 @recipe.get("/{recipe_id}", response_model=schemas.Recipe)
 def get_recipe(recipe_id: str, db: Session = Depends(get_db)):
     db_recipe = db.query(models.Recipe).filter(models.Recipe.recipeID == recipe_id).first()
@@ -84,34 +108,33 @@ def get_recipe(recipe_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Recipe not found")
     return db_recipe
 
-# get cookers used in recipe
-@recipe.get("/{recipe_id}/cookers", response_model=List[schemas.Cooker])
-def get_recipe_cookers(recipe_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    cookers = db.query(models.RecipeWithCooker).filter(models.Recipe.recipeID == recipe_id).offset(skip).limit(limit).all()
-    return cookers
-
-# get ingredients used in recipe
-@recipe.get("/{recipe_id}/ingredients", response_model=List[schemas.Ingredient])
-def get_recipe_details(recipe_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    ingredients = db.query(models.RecipeWithIngredient).filter(models.Recipe.recipeID == recipe_id).offset(skip).limit(limit).all()
-    return ingredients
-
-# get detail recipes
 @recipe.get("/{recipe_id}/details", response_model=List[schemas.DetailRecipe])
-def get_recipe_details(recipe_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    db_recipe = db.query(models.Recipe).filter(models.Recipe.recipeID == recipe_id).first()
-    if db_recipe is None:
-        raise HTTPException(status_code=404, detail="recipe not found")
-    db_detail_recipes= db.query(models.DetailRecipe).filter(models.DetailRecipe.recipeID == db_recipe.recipeID).offset(skip).limit(limit).all()
-    return db_detail_recipes
+def get_recipe_details(recipe_id: str, db: Session = Depends(get_db)):
+    # Fetching the details of the recipe
+    details = db.query(models.DetailRecipe).filter(models.DetailRecipe.recipeID == recipe_id).all()
+
+    if not details:
+        raise HTTPException(status_code=404, detail="Recipe details not found")
+
+    return details
+
+@recipe.get("/search", response_model=List[schemas.Recipe])
+def search_recipes(name: str = Query(None, min_length=1), db: Session = Depends(get_db)):
+    # Searching for recipes by name
+    if name:
+        recipes = db.query(models.Recipe).filter(models.Recipe.title.contains(name)).all()
+        return recipes
+    else:
+        raise HTTPException(status_code=400, detail="Search query cannot be empty")
 
 ### UPDATE ### 
-# update recipe
+# Update recipe
 @recipe.put("/{recipe_id}", response_model=schemas.Recipe)
-def update_recipe(recipe_id: str, recipe: schemas.RecipeUpdate,  db: Session = Depends(get_db)):
+def update_recipe(recipe_id: str, recipe: schemas.RecipeUpdate, db: Session = Depends(get_db)):
     db_recipe = db.query(models.Recipe).filter(models.Recipe.recipeID == recipe_id).first()
     if db_recipe is None:
         raise HTTPException(status_code=404, detail="Recipe not found")
+
     db_recipe.title = recipe.title
     db_recipe.subTitle = recipe.subTitle
     db_recipe.manId = recipe.manId
@@ -119,40 +142,51 @@ def update_recipe(recipe_id: str, recipe: schemas.RecipeUpdate,  db: Session = D
     db_recipe.like = recipe.like
     db_recipe.modifiedTime = recipe.modifiedTime if recipe.isModify else None
     db_recipe.level = recipe.level
+
     db.commit() 
     db.refresh(db_recipe) 
     return db_recipe
 
+@recipe.put("/details/{detailRecipeID}", response_model=schemas.DetailRecipe)
+def update_recipe_detail(detailRecipeID: str, detail_data: schemas.DetailRecipeUpdate, db: Session = Depends(get_db)):
+    # Fetch and update the recipe detail by detailRecipeID
+    db_detail = db.query(models.DetailRecipe).filter(models.DetailRecipe.detailRecipeID == detailRecipeID).first()
+    if not db_detail:
+        raise HTTPException(status_code=404, detail="Recipe detail not found")
+
+    db_detail.description = detail_data.description
+    db_detail.order = detail_data.order
+    db_detail.imgSrc = detail_data.imgSrc
+
+    db.commit()
+    db.refresh(db_detail)
+
+    return db_detail
 
 ### DELETE ### 
-# delete recipe
+# Delete recipe
 @recipe.delete("/{recipe_id}")
-def delete_ingredient(recipe_id: str, db: Session = Depends(get_db)):
+def delete_recipe(recipe_id: str, db: Session = Depends(get_db)):
     db_recipe = db.query(models.Recipe).filter(models.Recipe.recipeID == recipe_id).first()
     if db_recipe is None:
-        raise HTTPException(status_code=400, detail="recipe not found")
-    db_my_recipes = db.query(models.MyRecipes).filter(models.MyRecipes.recipeID == db_recipe.recipeID).all()
-    db_like_recipes = db.query(models.LikeRecipes).filter(models.LikeRecipes.recipeID == db_recipe.recipeID).all()
-    db_detail_recipes = db.query(models.DetailRecipe).filter(models.DetailRecipe.recipeID == db_recipe.recipeID).all()
-    for dy_my_recipe in db_my_recipes:
-        db.delete(dy_my_recipe)
-    for db_like_recipe in db_like_recipes:
-        db.delete(db_like_recipe)
-    for db_detail_recipe in db_detail_recipes:
-        db.delete(db_detail_recipe)
+        raise HTTPException(status_code=404, detail="Recipe not found")
+
+    # Delete associations with cookers and ingredients
+    db.execute(models.t_recipeWithCooker.delete().where(models.t_recipeWithCooker.c.recipeID == recipe_id))
+    db.execute(models.t_recipeWithIngredient.delete().where(models.t_recipeWithIngredient.c.recipeID == recipe_id))
+
     db.delete(db_recipe)
     db.commit()
-    return {"message": "recipe deleted successfully"}
+    return {"message": "Recipe deleted successfully"}
 
-# delete detail recipe
-@recipe.delete("/{detail_id}/detail")
-def delete_ingredient(detail_id: str, db: Session = Depends(get_db)):
-    db_detail_recipe = db.query(models.DetailRecipe).filter(models.DetailRecipe.detailRecipeID == detail_id).first()
-    if db_detail_recipe is None:
-        raise HTTPException(status_code=400, detail="recipe not found")
-    db.delete(db_detail_recipe)
+@recipe.delete("/details/{detailRecipeID}")
+def delete_recipe_detail(detailRecipeID: str, db: Session = Depends(get_db)):
+    # Fetch and delete the recipe detail by detailRecipeID
+    db_detail = db.query(models.DetailRecipe).filter(models.DetailRecipe.detailRecipeID == detailRecipeID).first()
+    if not db_detail:
+        raise HTTPException(status_code=404, detail="Recipe detail not found")
+
+    db.delete(db_detail)
     db.commit()
-    return {"message": "detail recipe deleted successfully"}
 
-
-
+    return {"message": "Recipe detail deleted successfully"}
