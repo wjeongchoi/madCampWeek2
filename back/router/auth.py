@@ -3,7 +3,7 @@ from starlette.config import Config
 from typing import Optional
 import aiohttp
 
-oauth = APIRouter()
+auth = APIRouter()
 config = Config(".env")
 REDIRECT_URI = "http://www.localhost:8000/oauth/kakao"
 REDIRECT_KAKAO_KEY = config("KAKAO_KEY")
@@ -22,13 +22,13 @@ async def send_post_request(url, data, headers=None):
             return await response.text()
         
         
-# oauth
-@oauth.get('/url')
+# auth
+@auth.get('/url')
 def oauth_url_api():
     # json
     return {"kakao_oauth_url": f'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={REDIRECT_KAKAO_KEY}&redirect_uri={REDIRECT_URI}'}
     
-@oauth.get("/kakao")
+@auth.get("/kakao")
 async def request_ouath_with_kakao(code: Optional[str] = None):
     url = "https://kauth.kakao.com/oauth/token"
     payload = {'grant_type': 'authorization_code',

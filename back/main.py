@@ -6,7 +6,7 @@ import  models.models as models, schemas.schemas as schemas
 from database import engine
 
 
-from router.oauth import oauth
+from router.auth import auth
 from router.users import user
 from router.recipes import recipe
 from router.ingrendient import ingredient
@@ -20,7 +20,7 @@ config = Config(".env")
 
 
         
-app.include_router(oauth, prefix="/oauth",tags=["auth"])
+app.include_router(auth, prefix="/auth",tags=["auth"])
 app.include_router(user, prefix="/users",tags=["user"])
 app.include_router(recipe, prefix="/recipes",tags=["recipe"])
 app.include_router(ingredient, prefix="/ingredients",tags=["ingredient"])
