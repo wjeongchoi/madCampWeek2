@@ -10,7 +10,7 @@ class Cooker(Base):
     __tablename__ = 'cookers'
 
     cookerID = Column(String(36), primary_key=True, nullable=False)
-    cookerName = Column(String(100), nullable=False)
+    cookerName = Column(String(100), nullable=False, unique=True)
     
     users = relationship('User', secondary='myCookers')
     recipe = relationship('Recipe', secondary='recipeWithCooker')
@@ -29,7 +29,7 @@ class Ingredient(Base):
     __tablename__ = 'ingredients'
 
     ingredientID = Column(String(36), primary_key=True, nullable=False)
-    ingredientName = Column(String(100), nullable=False)
+    ingredientName = Column(String(100), nullable=False, unique=True)
 
     recipe = relationship('Recipe', secondary='recipeWithIngredient')
     users = relationship('User', secondary='myIngredients')
