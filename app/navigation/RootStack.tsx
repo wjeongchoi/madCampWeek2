@@ -31,7 +31,7 @@ export const RootStack: React.FC = () => {
           </View>
         }
       >
-        <Stack.Navigator initialRouteName="HomeTab">
+        <Stack.Navigator initialRouteName="Intro">
           <Stack.Screen
             name="HomeTab"
             component={HomeTab}
