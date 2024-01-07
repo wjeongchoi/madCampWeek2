@@ -12,6 +12,8 @@ import {
   ResultRecommend,
   MyKitchenState,
   ManRecipe,
+  Intro,
+  SignUp,
 } from "../screens";
 import { center, colors, fill } from "../styles";
 import { HeaderBackImage } from "./Header";
@@ -41,6 +43,8 @@ export const RootStack: React.FC = () => {
           <Stack.Screen name="UploadRecipe" component={UploadRecipe}/>
           <Stack.Screen name="ResultRecommend" component={ResultRecommend}/>
           <Stack.Screen name="RecommendKitchenState" component={RecommendedKitchenState}/>
+          <Stack.Screen name="SignUp" component={SignUp}/>
+          <Stack.Screen name="Intro" component={Intro}/>
 
         </Stack.Navigator>
       </React.Suspense>

@@ -21,6 +21,8 @@ export type RootStackParamList = {
   UploadRecipe: undefined;
   ResultRecommend: undefined;
   MyKitchenState: undefined;
+  Intro: undefined;
+  SignUp: undefined;
 };
 
 

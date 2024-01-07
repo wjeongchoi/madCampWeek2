@@ -9,3 +9,5 @@ export * from "./RecommendMain";
 export * from "./ResultRecommend";
 export * from "./SearchMain";
 export * from "./UploadRecipe";
+export * from "./Intro";
+export * from "./SignUp";
