@@ -48,7 +48,7 @@ class User(Base):
     __tablename__ = 'users'
 
     userID = Column(String(36), primary_key=True)
-    email = Column(String(50))
+    email = Column(String(300))
     password = Column(String(100))
     name = Column(String(50), nullable=False)
     imgSrc = Column(String(100))
