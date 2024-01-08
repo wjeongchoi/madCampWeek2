@@ -60,46 +60,52 @@ def kakao_login():
 @auth.get("/kakao/callback")
 async def kakao_callback(code: str, db: Session = Depends(get_db)):
     # Exchange code for token
-    url = "https://kauth.kakao.com/oauth/token"
-    data={
-            "grant_type": "authorization_code",
-            "client_id": KAKAO_CLIENT_ID,
-            "redirect_uri": KAKAO_REDIRECT_URI,
-            "code": code,
-            "client_secret": KAKAO_CLIENT_SECRET
-        }
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-
-    result = await send_post_request(url, data, headers)
-    access_token = json.loads(result)['access_token']
-    jwt_data = {
-        "isOauth": True,
-        "token": access_token
+    token_url = "https://kauth.kakao.com/oauth/token"
+    token_data = {
+        "grant_type": "authorization_code",
+        "client_id": KAKAO_CLIENT_ID,
+        "redirect_uri": KAKAO_REDIRECT_URI,
+        "code": code,
+        "client_secret": KAKAO_CLIENT_SECRET
     }
-    
-    password = str(create_jwt_token(jwt_data))
-    print(password, len(password))
-    db_user = db.query(models.User).filter(models.User.email == password).first()
-    if db_user is None: # user not registered
-        headers = {
-            "Authorization": f"Bearer ${access_token}",
-            "Content-type:": "application/x-www-form-urlencoded;charset=utf-8"
-        }
-        result = await fetch_data("https://kapi.kakao.com/v2/user/me", headers=headers)
-        proerties = json.loads(result)['properties']
-        name = proerties['nickname']
-        imgSrc = proerties['profile_image']
+    token_headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    token_result = await send_post_request(token_url, token_data, token_headers)
+    access_token = json.loads(token_result)['access_token']
+
+    # Fetch user info from Kakao
+    user_info_url = "https://kapi.kakao.com/v2/user/me"
+    user_info_headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
+    }
+    user_info_result = await fetch_data(user_info_url, user_info_headers)
+    user_info = json.loads(user_info_result)
+    email = user_info.get('kakao_account', {}).get('email', None)
+
+    if not email:
+        return {"status": "email_required"}
+
+
+    # Check if user exists
+    db_user = db.query(models.User).filter(models.User.email == email).first()
+    if db_user is None:
+        # User not registered, create new user
+        properties = user_info.get('properties', {})
+        name = properties.get('nickname', 'Unknown')
+        imgSrc = properties.get('profile_image', '')
+
         new_user = models.User(
                     userID=uuid.uuid4(),
-                    email=password, 
-                    password=hashed_password, 
+                    email=email,
+                    password=bcrypt.hashpw(uuid.uuid4().hex.encode('utf-8'), bcrypt.gensalt()), 
                     name=name, 
                     createdTime=date.today(),
                     imgSrc=imgSrc)
-        db.add(new_user) 
-        db.commit()    
-        db.refresh(new_user) 
-        return new_user   
-    return db_user
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return new_user
+    else:
+        # User exists, log them in
+        return db_user

@@ -14,6 +14,7 @@ import {
   ManRecipe,
   Intro,
   SignUp,
+  WebViewScreen,
 } from "../screens";
 import { center, colors, fill } from "../styles";
 import { HeaderBackImage } from "./Header";
@@ -45,6 +46,7 @@ export const RootStack: React.FC = () => {
           <Stack.Screen name="RecommendKitchenState" component={RecommendedKitchenState}/>
           <Stack.Screen name="SignUp" component={SignUp}/>
           <Stack.Screen name="Intro" component={Intro}/>
+          <Stack.Screen name="WebViewScreen" component={WebViewScreen}/>
 
         </Stack.Navigator>
       </React.Suspense>

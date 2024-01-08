@@ -11,3 +11,4 @@ export * from "./SearchMain";
 export * from "./UploadRecipe";
 export * from "./Intro";
 export * from "./SignUp";
+export * from "./WebViewScreen";

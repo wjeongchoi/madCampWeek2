@@ -23,9 +23,8 @@ export type RootStackParamList = {
   MyKitchenState: undefined;
   Intro: undefined;
   SignUp: undefined;
+  WebViewScreen: { loginUrl: string };
 };
-
-
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
   StackScreenProps<RootStackParamList, T>;
