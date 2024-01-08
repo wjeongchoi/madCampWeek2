@@ -42,3 +42,47 @@ export const postRequest = async (
     }
   }
 };
+
+export const putRequest = async (
+  url: string,
+  data: any,
+  handleSuccess: (responseData: any) => void,
+  handleError?: (error: any) => void
+) => {
+  try {
+    console.log('request', `${API_URL}/${url}`);
+    const response = await axios.put(
+      `${API_URL}/${url}`,
+      data,
+      { withCredentials: true }
+    );
+    handleSuccess(response);
+  } catch (error) {
+    console.error("Error updating data:", error);
+    if (handleError) {
+      handleError(error);
+    }
+  }
+};
+
+
+export const deleteRequest = async (
+  url: string,
+  handleSuccess: (responseData: any) => void,
+  handleError?: (error: any) => void
+) => {
+  try {
+    console.log('request', `${API_URL}/${url}`);
+    const response = await axios.delete(
+      `${API_URL}/${url}`,
+      { withCredentials: true }
+    );
+    handleSuccess(response);
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    if (handleError) {
+      handleError(error);
+    }
+  }
+};
+
