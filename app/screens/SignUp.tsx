@@ -67,13 +67,11 @@ export const SignUp: React.FC<RootStackScreenProps<"SignUp">> = ({ navigation })
       />
       <TextInput
         value={password}
-        secureTextEntry
-        options={{placeholder: "비밀번호", onChangeText: setPassword}}
+        options={{placeholder: "비밀번호", onChangeText: setPassword, secureTextEntry:true}}
       />
       <TextInput
-        secureTextEntry
         value={confirmPassword}
-        options={{placeholder: "비밀번호", onChangeText: setConfirmPassword}}
+        options={{placeholder: "비밀번호", onChangeText: setConfirmPassword, secureTextEntry:true}}
 
       />
       {/* 프로필 사진 업로드 버튼을 추가할 수 있습니다. */}

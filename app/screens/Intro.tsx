@@ -64,9 +64,8 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({navigation}) => 
         options={{placeholder:"이메일", onChangeText:setEmail}}
       />
       <TextInput
-        secureTextEntry
         value={password}
-        options={{placeholder:"비밀번호", onChangeText:setPassword}}
+        options={{placeholder:"비밀번호", onChangeText:setPassword, secureTextEntry:true}}
       />
       <Button title="로그인" onPress={handleLogin} />
       <Button title="카카오 로그인" onPress={handleKakaoLogin}  />
