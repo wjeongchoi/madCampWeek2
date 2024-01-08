@@ -13,8 +13,8 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> =({ na
   const [cookerInput, setCookerInput] = useState('');
   const [ingradients, setIngradiants] = useState([]);
   const [ingradientInput, setIngradientInput] = useState('');
-  const [level, setLevel] = useState(0);
-  const [cookTime, setCookTime] = useState('');
+  const [level, setLevel] = useState(1);
+  const [cookTime, setCookTime] = useState(1);
 
   const addCookerTag = ((tag : string) => {
     setCookerInput(tag)
@@ -40,10 +40,11 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> =({ na
       'level': level,
       'cookTime': cookTime
     };
-    console.log(cookTime, level)
+    console.log("titie", title, subTitle);
+    console.log(cookTime, level);
     postRequest('recipes', sendDate, () => {
       //console.log(API_URL+'/recipes')
-      navigation.navigate('Home');
+      navigation.navigate('HomeTab');
       }
     );
     });
@@ -97,34 +98,36 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> =({ na
         </View>
       
       </View>
-      <View>
+      <View style={{flexDirection: 'column'}}>
         {/*DOTO: label이 화면에 표시되지 않는 오류 수정 */}
-        <Text style={[text.h3]}>요리 정보</Text>
-        <View style={{flexDirection: 'row'}}>
-          <Picker
-              style={{flex: 1}}
-              selectedValue={level}
-              onValueChange={(value, index)=>{setLevel(value)}}>
-            <Picker.Item label='난이도' value='1' style={{fontSize: 12}}/>
-            <Picker.Item label='누구나' value='2' style={{fontSize: 12}}/>
-            <Picker.Item label='초급' value='3' style={{fontSize: 12}}/>
-            <Picker.Item label='중급' value='4' style={{fontSize: 12}}/>
-            <Picker.Item label='상급' value='5' style={{fontSize: 12}}/>
-          </Picker>
-        </View>
-        <Text style={[text.h3]}>소요 시간</Text>
-        <View style={{flexDirection: 'row'}}>
-          <Picker
-              style={{flex: 1, fontSize: 12}}
-              selectedValue={cookTime}
-              onValueChange={(cookTime, index)=>{setCookTime(cookTime)}}
-              >
-            <Picker.Item label='5분이내' value="1" style={{fontSize: 12}}/>
-            <Picker.Item label='10분이내' value="2" style={{fontSize: 12}}/>
-            <Picker.Item label='30분이내' value="3" style={{fontSize: 12}}/>
-            <Picker.Item label='60분이내' value="4" style={{fontSize: 12}}/>
-            <Picker.Item label='1시간이상' value="5" style={{fontSize: 12}}/>
-          </Picker>
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly' }}>  
+          <View style={{flexDirection: 'column', marginRight: 50}}>
+            <Text style={[text.h3]}>난이도</Text>
+            <Picker
+                style={{width: 150}}
+                selectedValue={level}
+                onValueChange={(value, index)=>{setLevel(value)}}>
+              <Picker.Item label='난이도' value='1' style={{fontSize: 12}}/>
+              <Picker.Item label='누구나' value='2' style={{fontSize: 12}}/>
+              <Picker.Item label='초급' value='3' style={{fontSize: 12}}/>
+              <Picker.Item label='중급' value='4' style={{fontSize: 12}}/>
+              <Picker.Item label='상급' value='5' style={{fontSize: 12}}/>
+            </Picker>
+          </View>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={[text.h3]}>소요 시간</Text>
+            <Picker
+                style={{flex: 1, fontSize: 12, width: 150}}
+                selectedValue={cookTime}
+                onValueChange={(cookTime, index)=>{setCookTime(cookTime)}}
+                >
+              <Picker.Item label='5분이내' value="1" style={{fontSize: 12}}/>
+              <Picker.Item label='10분이내' value="2" style={{fontSize: 12}}/>
+              <Picker.Item label='30분이내' value="3" style={{fontSize: 12}}/>
+              <Picker.Item label='70분이내' value="4" style={{fontSize: 12}}/>
+              <Picker.Item label='1시간이상' value="5" style={{fontSize: 12}}/>
+            </Picker>
+          </View>
         </View>
       </View>
       <Button

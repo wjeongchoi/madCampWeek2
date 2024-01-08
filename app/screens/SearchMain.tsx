@@ -20,9 +20,6 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})
         console.error("Error fetching recipes data:", error);
       }
     )
-
-
-      console.log(recipes)
   },[])
   return (
     <SafeAreaView style={{ flex: 1, marginTop: 100 }}>
@@ -40,27 +37,16 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})
                 
                 onPress={() => {/* call search function */ }}/>
       </View>
-      <View style={{ flexDirection: "row"}}>
-        <Button
-          title= '만개의 레시피'
-          onPress={() => navigation.navigate('ManRecipe')}
-        >
-        </Button>
-        <Button
-          title= '자체 레시피'
-          onPress={() => navigation.navigate('OwnRecipe')}
-        >
-        </Button>
-      </View>
       
     <ScrollView style={{ display: "flex",
                           width: (Dimensions.get('window').width * 0.9)}}>
     {
-        recipes.map((recipe : Recipe) => {
+        recipes.map((recipe : Recipe, index) => {
           return (
             <TouchableOpacity onPress={() => {
-              const url = `https://www.10000recipe.com/recipe/${manId}`;
-              Linking.openURL(url);
+              const recipeId= recipe.recipeID;
+              console.log(recipe);
+              navigation.navigate('OwnRecipe', { recipeId: recipeId } as { recipeId: string });
             }}>
             <Text style={[text.h2]}>
               만개의 레시피 링크
