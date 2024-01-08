@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 from database import get_db
 from typing import List
 from starlette.config import Config
-from fastapi import status
+from .auth import create_jwt_token, decode_jwt_token
 import bcrypt
-
+ 
 
 user = APIRouter()
 
@@ -18,10 +18,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    
     hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
-    #hashed_password = user.password
-
     new_user = models.User(
                 userID=user.userID,
                 email=user.email, 
@@ -45,6 +42,11 @@ def login_user(email: str, password: str, db: Session = Depends(get_db)):
             raise HTTPException(status_code=401, detail="Incorrect password")
     else:
         raise HTTPException(status_code=404, detail="User not found")
+
+
+
+
+
 
 # add ingredient in my refrigerator
 @user.post("/{userID}/ingredients", response_model=schemas.UserIngredientResponse)
@@ -340,68 +342,3 @@ def delete_user_cooker(user_id: str, cooker_name: str, db: Session = Depends(get
         raise HTTPException(status_code=404, detail="Cooker not found for the user")
 
     return {"message": "Cooker deleted from user successfully"}
-
-config = Config(".env")
-
-
-KAKAO_REDIRECT_URI = config("KAKAO_REDIRECT_URI")
-KAKAO_CLIENT_ID = config("KAKAO_KEY")
-KAKAO_CLIENT_SECRET = config("KAKAO_CLIENT_SECRET")
-
-
-# Kakao login endpoint
-@user.get("/kakao")
-def kakao_login():
-    return {"url": f"https://kauth.kakao.com/oauth/authorize?client_id={KAKAO_CLIENT_ID}&redirect_uri={KAKAO_REDIRECT_URI}&response_type=code"}
-
-# Kakao callback endpoint
-@user.get("/kakao/callback")
-def kakao_callback(code: str, db: Session = Depends(get_db)):
-    # Exchange code for token
-    token_response = requests.post(
-        "https://kauth.kakao.com/oauth/token",
-        data={
-            "grant_type": "authorization_code",
-            "client_id": KAKAO_CLIENT_ID,
-            "redirect_uri": KAKAO_REDIRECT_URI,
-            "code": code,
-            "client_secret": KAKAO_CLIENT_SECRET
-        }
-    ).json()
-    access_token = token_response.get("access_token")
-
-    # Get user info from Kakao
-    user_info_response = requests.get(
-        "https://kapi.kakao.com/v2/user/me",
-        headers={"Authorization": f"Bearer {access_token}"}
-    ).json()
-    kakao_id = user_info_response.get("id")
-    email = user_info_response.get("kakao_account", {}).get("email")
-
-    kakao_id = user_info_response.get("id")
-    email = user_info_response.get("kakao_account", {}).get("email")
-    name = user_info_response.get("properties", {}).get("nickname")
-    profile_image = user_info_response.get("properties", {}).get("profile_image")
-
-    # Create or update user in your database
-    db_user = db.query(models.User).filter(models.User.email == email).first()
-    if db_user:
-        # Update existing user
-        db_user.name = name
-        db_user.imgSrc = profile_image or db_user.imgSrc
-    else:
-        # Create new user
-        new_user = models.User(
-            userID=str(kakao_id),  # Assuming userID is a string field
-            email=email,
-            name=name,
-            imgSrc=profile_image,
-            createdTime=datetime.now()  # Assuming createdTime is a datetime field
-        )
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
-        db_user = new_user
-
-    # Return a response or redirect
-    return {"message": f"User {'updated' if db_user else 'created'} successfully with Kakao"}
