@@ -1,13 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Alert, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getRequest } from '../axios';
+import { deleteRequest, getRequest } from '../axios';
 import { column, text,gap, justify, align, row} from '../styles';
 import { HomeTabScreenProps } from '../navigation/types';
 import { UserData } from '../types/user';
 
 export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
+
+  const handleUnsubscribe = () => {
+    Alert.alert(
+      "회원탈퇴 확인", // Title of the alert
+      "정말 탈퇴하시겠습니까?", // Message in the alert
+      [
+        {
+          text: "취소",
+          onPress: () => console.log("Cancel Unsubscribe"),
+          style: "cancel"
+        },
+        { text: "확인", onPress: () => unsubscribeUser() }
+      ]
+    );
+  };
+
+  const unsubscribeUser = async () => {
+    const userID = await AsyncStorage.getItem('userID');
+    if (userID) {
+      deleteRequest(
+        `users/${userID}`,
+        (response) => {
+          console.log("Unsubscribed successfully:", response);
+          navigation.navigate('Intro'); // Navigate to Intro screen
+        },
+        (error) => {
+          console.error("Error during unsubscribe:", error);
+        }
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -50,9 +81,12 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
               <Text style={[text.body1]}>가입 날짜: {userData.createdTime}</Text>
             </View>
           </View>
-
         </>
       )}
+      <Button
+        title="회원탈퇴"
+        onPress={handleUnsubscribe}
+      />
     </View>
   );
 }
