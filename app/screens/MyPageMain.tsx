@@ -40,6 +40,15 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('userID'); // Remove userID from AsyncStorage
+      navigation.navigate('Intro'); // Navigate to Intro screen
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -83,6 +92,10 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
           </View>
         </>
       )}
+      <Button
+        title="로그아웃"
+        onPress={handleLogout}
+      />
       <Button
         title="회원탈퇴"
         onPress={handleUnsubscribe}
