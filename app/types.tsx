@@ -3,7 +3,7 @@ export interface Recipe {
     title: string,
     subTitle: string,
     manId: number,
-    cookTime: string,
+    cookTime: number,
     like: number,
     writedTime: number,
     level: number,

@@ -5,6 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import { border, colors, text } from '../styles';
 import { RootStackScreenProps } from '../navigation/types';
 import {postRequest} from "../axios"
+import { Tag } from "../components";
 
 export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> =({ navigation })=> {
   const [title, setTitle] = useState('');
@@ -50,11 +51,11 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> =({ na
     });
 
   return (
-    <View style={{ flex: 1, alignItems: 'center' }}>
+    <View style={{ flex: 1}}>
       <View>
         <Text style={[text.h1]}>레시피 업로드</Text>
         <TextInput
-        style={[border.gray100]}
+        style={[{height: 70, fontSize: 30, margin: 20, borderRadius: 20}, border.gray100]}
         value={title}
         onChangeText={(tast: string) => setTitle(tast)}
         placeholder="제목을 입력해주세요."/>
@@ -64,11 +65,12 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> =({ na
           style={[border.gray100]}
           value={subTitle}
           onChangeText={(taxt: string) => setSubTitle(taxt)}
-          placeholder="부제목을 입력해주세요."/>
+          placeholder="설명을 입력해주세요."/>
       </View>
       <View>
-        <Text style={[text.h3] }>요리 부재료 및 도구</Text>
+        <Text style={[text.h2] }>요리 부재료 및 도구</Text>
         {/* cookers and ingrandiants */}
+        <Text style={[text.h3]}>재료추가</Text>
         <TextInput
           style={[border.gray100]}
           placeholder='2가지 이상의 도구는 띄어쓰기로 구분해 주세요'
@@ -77,12 +79,19 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> =({ na
         <View style={{ flexDirection: "row", width: 200, height: 40}}>
           {
             cookers.map((cooker) => {
-              return (<Button
-                title={cooker}/>)
+              return (<Tag 
+                onPress={()=> {console.log("state changed")}}
+                value={cooker}
+                onDeletePress={() => {console.log("delete")}}
+                size={20}
+                isSelected={false}
+                color={colors.primary}
+                style={{width: 100}}/>)
+
             })
           }
         </View>
-
+        <Text style={[text.h3]}>재료추가</Text>
         <TextInput
           style={[border.gray100]}
           placeholder='2가지 이상의 재료는 띄어쓰기로 구분해 주세요'
@@ -91,8 +100,14 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> =({ na
         <View style={{ flexDirection: "row", width: 200, height: 40}}>
           {
             ingradients.map((ingradient) => {
-              return (<Button
-                title={ingradient}/>)
+              return (<Tag 
+                onPress={()=> {console.log("state changed")}}
+                value={ingradient}
+                onDeletePress={() => {console.log("delete")}}
+                size={20}
+                isSelected={false}
+                color={colors.primary}
+                style={{width: 100}}/>)
             })
           }
         </View>

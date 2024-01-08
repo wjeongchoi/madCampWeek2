@@ -29,10 +29,10 @@ export const ManRecipe = ({recipeId} : {recipeId: string}) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'column' }}>
+    <View style={{alignItems: 'center', flexDirection: 'column' }}>
       <Image source={require('../assets/icon.png')}
-          style={{ flex: 1, width: 120, height: 120, marginRight: 10  }}/>
-      <View style={{ width: 100}}>
+          style={{  width: 120, height: 120, marginRight: 10  }}/>
+      <View >
         <Text style={[text.h1]}>{title}</Text>
         <Text style={[text.h3]}>{subTitle}</Text>
         <View style={{flexDirection: 'row',
