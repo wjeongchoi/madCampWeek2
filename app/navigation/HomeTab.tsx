@@ -68,6 +68,7 @@ export const HomeTab: React.FC = () => {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="md-person-sharp" color={color} size={size} />
             ),
+            headerShown: true,
           }}
         />
       </Tab.Navigator>
