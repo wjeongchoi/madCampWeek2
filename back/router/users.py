@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from database import get_db
 from typing import List
 from starlette.config import Config
+from fastapi import status
+import bcrypt
 
 
 user = APIRouter()
@@ -17,8 +19,9 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    hashed_password = user.password
-    # TO DO: hash password
+    hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
+    #hashed_password = user.password
+
     new_user = models.User(
                 userID=user.userID,
                 email=user.email, 
@@ -31,6 +34,17 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user) 
     return new_user
 
+@user.get("/login", response_model=schemas.UserLoginResponse)
+def login_user(login: schemas.UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(models.User).filter(models.User.email == login.email).first()
+    if db_user:
+        # Verify the password
+        if bcrypt.checkpw(login.password.encode('utf-8'), db_user.password.encode('utf-8')):
+            return {"userID": db_user.userID}
+        else:
+            raise HTTPException(status_code=401, detail="Incorrect password")
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
 
 # add ingredient in my refrigerator
 @user.post("/{userID}/ingredients", response_model=schemas.UserIngredientResponse)

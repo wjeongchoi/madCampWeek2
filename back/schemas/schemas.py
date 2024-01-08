@@ -23,6 +23,13 @@ class User(UserBase):
         from_attributes = True
         
 
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class UserLoginResponse(BaseModel):
+    userID: str
+
 # ingredient
 class IngredientBase(BaseModel):
     ingredientID: Optional[str] = uuid.uuid4()
