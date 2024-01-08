@@ -35,11 +35,11 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 @user.get("/login", response_model=schemas.UserLoginResponse)
-def login_user(login: schemas.UserLogin, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.email == login.email).first()
+def login_user(email: str, password: str, db: Session = Depends(get_db)):
+    db_user = db.query(models.User).filter(models.User.email == email).first()
     if db_user:
         # Verify the password
-        if bcrypt.checkpw(login.password.encode('utf-8'), db_user.password.encode('utf-8')):
+        if bcrypt.checkpw(password.encode('utf-8'), db_user.password.encode('utf-8')):
             return {"userID": db_user.userID}
         else:
             raise HTTPException(status_code=401, detail="Incorrect password")
