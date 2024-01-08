@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, APIRouter, Query
 import models.models as models, schemas.schemas as schemas
 from sqlalchemy.orm import Session
 from database import get_db
-from typing import List
+from typing import List, Optional
 
 recipe = APIRouter()
 
@@ -126,6 +126,30 @@ def search_recipes(name: str = Query(None, min_length=1), db: Session = Depends(
         return recipes
     else:
         raise HTTPException(status_code=400, detail="Search query cannot be empty")
+
+@recipe.get("/recommend", response_model=List[schemas.Recipe])
+def recommend(
+    ingredient_ids: Optional[List[str]] = Query(None),
+    cooker_ids: Optional[List[str]] = Query(None),
+    db: Session = Depends(get_db)
+):
+    # Building the query
+    query = db.query(models.Recipe)
+
+    # Filter by ingredients if provided
+    if ingredient_ids:
+        query = query.join(models.t_recipeWithIngredient, models.Recipe.recipeID == models.t_recipeWithIngredient.c.recipeID)
+        query = query.filter(models.t_recipeWithIngredient.c.ingredientID.in_(ingredient_ids))
+
+    # Filter by cookers if provided
+    if cooker_ids:
+        query = query.join(models.t_recipeWithCooker, models.Recipe.recipeID == models.t_recipeWithCooker.c.recipeID)
+        query = query.filter(models.t_recipeWithCooker.c.cookerID.in_(cooker_ids))
+
+    # Get the distinct recipes after applying filters
+    recipes = query.distinct().all()
+
+    return recipes
 
 ### UPDATE ### 
 # Update recipe
