@@ -1,11 +1,8 @@
-import datetime
 from fastapi import Depends, HTTPException, APIRouter, requests
 import models.models as models, schemas.schemas as schemas
 from sqlalchemy.orm import Session
 from database import get_db
 from typing import List
-from starlette.config import Config
-from .auth import create_jwt_token, decode_jwt_token
 import bcrypt
  
 
@@ -222,7 +219,7 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
 # get my cookers
 @user.get("/{user_id}/cookers", response_model=List[schemas.Cooker])
 def get_my_cookers(user_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    cookers = db.query(models.t_myCookers).filter(models.User.userID == user_id).offset(skip).limit(limit).all()
+    cookers = db.query(models.t_myCookers).filter(models.t_myCookers.c.userID == user_id).offset(skip).limit(limit).all()
     response_data = []
     for cooker in cookers:
         c = db.query(models.Cooker).filter(models.Cooker.cookerID == cooker.cookerID).first()
@@ -232,7 +229,7 @@ def get_my_cookers(user_id: str, skip: int = 0, limit: int = 100, db: Session = 
 # get my ingredients 
 @user.get("/{user_id}/ingredients", response_model=List[schemas.Ingredient])
 def get_my_ingredients(user_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    ingredients = db.query(models.t_myIngredients).filter(models.User.userID == user_id).offset(skip).limit(limit).all()
+    ingredients = db.query(models.t_myIngredients).filter(models.t_myIngredients.c.userID == user_id).offset(skip).limit(limit).all()
     response_data = []
     for ingredient in ingredients:
         i = db.query(models.Ingredient).filter(models.Ingredient.ingredientID == ingredient.ingredientID).first()
@@ -242,7 +239,7 @@ def get_my_ingredients(user_id: str, skip: int = 0, limit: int = 100, db: Sessio
 # get my like recipes - 테스트 필요
 @user.get("/{user_id}/like/recipes", response_model=List[schemas.Recipe])
 def get_my_like_recipes(user_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    likeRecipes = db.query(models.t_likeRecipes).filter(models.User.userID == user_id).offset(skip).limit(limit).all()
+    likeRecipes = db.query(models.t_likeRecipes).filter(models.t_likeRecipes.c.userID == user_id).offset(skip).limit(limit).all()
     response_data = []
     for likeRecipe in likeRecipes:
         l = db.query(models.Recipe).filter(models.Recipe.recipeID == likeRecipe.recipeID).first()
@@ -252,7 +249,7 @@ def get_my_like_recipes(user_id: str, skip: int = 0, limit: int = 100, db: Sessi
 # get my recipes
 @user.get("/{user_id}/recipes", response_model=List[schemas.Recipe])
 def get_my_recipes(user_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    myRecipes = db.query(models.t_myRecipes).filter(models.User.userID == user_id).offset(skip).limit(limit).all()
+    myRecipes = db.query(models.t_myRecipes).filter(models.t_myRecipes.c.userID == user_id).offset(skip).limit(limit).all()
     response_data = []
     for myRecipe in myRecipes:
         m = db.query(models.Recipe).filter(models.Recipe.recipeID == myRecipe.recipeID).first()
