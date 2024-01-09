@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { View, Text, Button } from 'react-native';
 import { text } from '../styles';
 import { getRequest } from '../axios'
+import { AppHeader } from '../components';
 
 export const OwnRecipe = ({ route } ) => {
   const { recipeId } = route.params;
@@ -29,6 +30,7 @@ export const OwnRecipe = ({ route } ) => {
 
   return (
     <View style={{ flex: 1}}>
+      <AppHeader title={'헤더 텍스트'}/>
       <Text style={{fontSize: 24, textAlign: 'left', alignContent: 'flex-start', margin: 10}}>{title}</Text>
       <Text style={{fontSize: 18, margin: 10}}>{subTitle}</Text>
       <View> 

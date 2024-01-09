@@ -38,12 +38,12 @@ export const RootStack: React.FC = () => {
             component={HomeTab}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="ManRecipe" component={ManRecipe}/>
-          <Stack.Screen name="OwnRecipe" component={OwnRecipe}/>
-          <Stack.Screen name="MyKitchenState" component={MyKitchenState}/>
-          <Stack.Screen name="UploadRecipe" component={UploadRecipe}/>
-          <Stack.Screen name="ResultRecommend" component={ResultRecommend}/>
-          <Stack.Screen name="RecommendKitchenState" component={RecommendedKitchenState}/>
+          <Stack.Screen name="ManRecipe" component={ManRecipe} options={{headerShown:false}}/>
+          <Stack.Screen name="OwnRecipe" component={OwnRecipe} options={{headerShown:false}}/>
+          <Stack.Screen name="MyKitchenState" component={MyKitchenState} options={{headerShown:false}}/>
+          <Stack.Screen name="UploadRecipe" component={UploadRecipe} options={{headerShown:false}}/>
+          <Stack.Screen name="ResultRecommend" component={ResultRecommend} options={{headerShown:false}}/>
+          <Stack.Screen name="RecommendKitchenState" component={RecommendedKitchenState} options={{headerShown:false}}/>
           <Stack.Screen name="SignUp" component={SignUp}/>
           <Stack.Screen name="Login" component={Intro} options={{headerShown:false}}/>
           <Stack.Screen name="kakaoLogin" component={WebViewScreen}/>

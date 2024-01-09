@@ -20,20 +20,22 @@ type Props = {
 export const WebViewScreen: React.FC<Props> = ({ route, navigation }) => {
   const { loginUrl } = route.params;
 
+  const [codeProcessed, setCodeProcessed] = useState(false); // 중복 호출 방지를 위한 상태 변수
+
   const handleNavigationStateChange = async (navState: any) => {
-    if (navState.url.includes('http://3.145.159.152/auth/kakao/callback')) {
-      // URL에서 Code 추출
+    if (navState.url.includes('http://3.145.159.152/auth/kakao/callback') && !codeProcessed) {
       const urlParams = queryString.parseUrl(navState.url);
       const code = urlParams.query.code;
 
       if (code) {
-        // getRequest를 호출하여 서버에 인증 코드 전달
+        setCodeProcessed(true);
         getRequest(`auth/kakao/callback?code=${code}`, (userData) => {
           const extractedUserId = userData.userID;
           AsyncStorage.setItem('userID', extractedUserId);
           navigation.navigate('HomeTab');
         }, (error) => {
           console.error('Failed to fetch user data:', error);
+          navigation.navigate('HomeTab');
         });
       }
     }

@@ -3,27 +3,42 @@ import { View, Text, Button } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { HomeTabScreenProps } from '../navigation/types';
 import { colors, text } from '../styles';
-import { ReqestButton, SearchBar } from '../components';
+import { AppHeader, ReqestButton, SearchBar } from '../components';
 import { getRequest } from '../axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+//import Header from "../components/Header";
 
 
 export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
   const [researchText, setResearchText] = useState('');
-  const [userID, setUserID]  = useState('');
-  const [myLikeRecipes, setMyLikeRecipes] = useState([]);
-  useEffect(() => {
-    setUserID('0b2d9852-7982-4c88-a85a-2c46dc42a53f');
-    console.log(`users/${userID}/recipes`);
-    getRequest(`users/${userID}/recipes`,  (responseData) => {
-      console.log(responseData);
-      
+  const [userID, setUserID] = useState('');
+  const [myLikeRecipes, setMyLikeRecipes] = useState([]);  useEffect(() => {
+    const fetchUserID = async () => {
+      try {
+        const storedUserID = await AsyncStorage.getItem('userID');
+        if (storedUserID !== null) {
+          setUserID(storedUserID);
+        }
+      } catch (e) {
+        // error reading value
       }
-    );
-    
+    };
+
+    fetchUserID();
   }, []);
+
+  useEffect(() => {
+    if (userID) {
+      console.log(`users/${userID}/recipes`);
+      getRequest(`users/${userID}/recipes`, (responseData) => {
+        console.log(responseData);
+      });
+    }
+  }, [userID]);
+
   return (
-    <View style={{ flex: 1, marginTop: 50, alignItems: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center', gap:8}}>
+      <AppHeader title={'앱 제목'}/>
       <SearchBar
         style={{width: 300}}
         onChangeText={() => {/* 추천 검색어 */}}
