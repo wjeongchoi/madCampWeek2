@@ -5,7 +5,7 @@ import { deleteRequest, getRequest } from "../axios";
 import { column, text, gap, justify, align, row, padding, safe } from "../styles";
 import { HomeTabScreenProps } from "../navigation/types";
 import { UserData } from "../types/user";
-import { AppHeader, ReqestButton } from "../components";
+import { AppHeader, RequestButton } from "../components";
 import { ScrollView } from "react-native-gesture-handler";
 
 export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
@@ -108,7 +108,7 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
         )}
         <Button title="로그아웃" onPress={handleLogout} />
         <Button title="회원탈퇴" onPress={handleUnsubscribe} />
-        <ReqestButton
+        <RequestButton
           onPress={() => {
             navigation.navigate("MyKitchenState");
           }}
@@ -117,6 +117,9 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
           iconName="restaurant-sharp"
           style={{ marginHorizontal: 30 }}
         />
+        <Text style={[text.h3, justify.start]}>좋아요한 레시피</Text>
+
+        <Text style={[text.h3, justify.start]}>내가 올린 레시피</Text>
       </ScrollView>
     </View>
   );
