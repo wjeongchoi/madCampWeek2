@@ -50,7 +50,7 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({
           const userID = response.userID;
           await AsyncStorage.setItem("userID", userID);
           console.log("Login successful, userID stored");
-          navigation.navigate("HomeTab");
+          navigation.navigate("Home");
         },
         (error) => {
           // Log the error object to understand the nature of the error
@@ -90,7 +90,7 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({
       ]}
     >
       <Image
-        source={require("../assets/favicon.png")}
+        source={require("../assets/logo2.png")}
         style={{ width: 150, height: 150 }}
       />
       <Text style={[text.h1, justify.center]}>앱 제목</Text>
