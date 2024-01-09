@@ -50,7 +50,7 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({
           const userID = response.userID;
           await AsyncStorage.setItem("userID", userID);
           console.log("Login successful, userID stored");
-          navigation.navigate("Home");
+          navigation.navigate("HomeTab");
         },
         (error) => {
           // Log the error object to understand the nature of the error
@@ -82,7 +82,7 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({
     <View
       style={[
         padding.horizontal(safe.horizontal),
-        gap(32),
+        gap(24),
         justify.center,
         align.center,
         fill,
@@ -93,7 +93,7 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({
         source={require("../assets/logo2.png")}
         style={{ width: 150, height: 150 }}
       />
-      <Text style={[text.h1, justify.center]}>앱 제목</Text>
+      <Text style={[text.h1, justify.center]}>맞춤혼밥</Text>
       <View style={[row, justify.between, gap(8)]}>
         <View style={[column, gap(8), fill]}>
           <TextInput
@@ -109,7 +109,7 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({
             }}
           />
         </View>
-        <RequestButton text="로그인" onPress={handleLogin} size={20} />
+        <RequestButton text="로그인" onPress={handleLogin} size={20} style={{ width: 80, height: 80 }} />
       </View>
       <View style={[column, gap(12), align.center]}>
         <TouchableOpacity onPress={handleKakaoLogin}>

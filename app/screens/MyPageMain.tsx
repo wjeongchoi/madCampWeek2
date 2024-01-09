@@ -1,17 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, Alert, Button } from "react-native";
+import { View, Text, Image, Alert, Button, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteRequest, getRequest } from "../axios";
-import { column, text, gap, justify, align, row, padding, safe } from "../styles";
+import {
+  column,
+  text,
+  gap,
+  justify,
+  align,
+  row,
+  padding,
+  safe,
+} from "../styles";
 import { HomeTabScreenProps } from "../navigation/types";
-import { UserData } from "../types/user";
-import { AppHeader, RequestButton } from "../components";
-import { ScrollView } from "react-native-gesture-handler";
+import { UserData } from "../types/user"; // Assuming Recipe is a type defined in your types
+import { Recipe } from "../types/recipe";
+import {
+  AppHeader,
+  RequestButton,
+  HorizontalRecipePreview,
+} from "../components";
+import { VerticalRecipePreview } from "../components/VerticalRecipePreview";
 
 export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
   navigation,
 }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [likeRecipes, setLikeRecipes] = useState<Recipe[]>([]);
+  const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
 
   const handleUnsubscribe = () => {
     Alert.alert(
@@ -60,6 +76,8 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
         console.log("UserID from AsyncStorage:", userID); // Ensure UserID is retrieved
 
         if (userID) {
+          getRequest(`users/${userID}/like/recipes`, setLikeRecipes);
+          getRequest(`users/${userID}/recipes`, setMyRecipes);
           getRequest(
             `users/${userID}`,
             (response) => {
@@ -118,8 +136,24 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
           style={{ marginHorizontal: 30 }}
         />
         <Text style={[text.h3, justify.start]}>좋아요한 레시피</Text>
+        <ScrollView style={[row]} horizontal={true}>
+          {likeRecipes.map((recipe, index) => (
+            <VerticalRecipePreview
+              key={index}
+              recipe={recipe}
+              imgSrc={recipe.imgSrc}
+            />
+          ))}
+        </ScrollView>
 
         <Text style={[text.h3, justify.start]}>내가 올린 레시피</Text>
+        {myRecipes.map((recipe, index) => (
+          <HorizontalRecipePreview
+            key={index}
+            recipe={recipe}
+            imgPath={recipe.imgSrc}
+          />
+        ))}
       </ScrollView>
     </View>
   );

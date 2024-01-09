@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
-import { HomeTabScreenProps } from '../navigation/types';
-import { colors, text } from '../styles';
-import { AppHeader, RequestButton, SearchBar } from '../components';
-import { getRequest } from '../axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-//import Header from "../components/Header";
-
+import React, { useState, useEffect } from "react";
+import { View, Text, ScrollView } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getRequest } from "../axios";
+import { AppHeader, Tag } from "../components";
+import { colors, column, gap, padding, row, safe, text } from "../styles";
+import { VerticalRecipePreview } from "../components/VerticalRecipePreview";
 
 export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
-  const [researchText, setResearchText] = useState('');
-  const [userID, setUserID] = useState('');
-  const [myLikeRecipes, setMyLikeRecipes] = useState([]);  useEffect(() => {
+  const [userID, setUserID] = useState("");
+  const [myIngredients, setMyIngredients] = useState([]);
+  const [myCookers, setMyCookers] = useState([]);
+  const [likeRecipes, setLikeRecipes] = useState([]);
+
+  useEffect(() => {
     const fetchUserID = async () => {
       try {
-        const storedUserID = await AsyncStorage.getItem('userID');
+        const storedUserID = await AsyncStorage.getItem("userID");
         if (storedUserID !== null) {
           setUserID(storedUserID);
         }
@@ -29,33 +29,59 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
 
   useEffect(() => {
     if (userID) {
-      console.log(`users/${userID}/recipes`);
-      getRequest(`users/${userID}/recipes`, (responseData) => {
-        console.log(responseData);
-      });
+      getRequest(`users/${userID}/ingredients`, setMyIngredients);
+      getRequest(`users/${userID}/cookers`, setMyCookers);
+      getRequest(`users/${userID}/like/recipes`, setLikeRecipes);
     }
   }, [userID]);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', gap:8}}>
-      <AppHeader title={'앱 제목'}/>
-      <SearchBar
-        style={{width: 300}}
-        onChangeText={() => {/* 추천 검색어 */}}
-        onPress={()=> {/* 검색 */}}
-        value={researchText}
-        size={20}
-        placeholder={"레시피를 검색해보세요"}
-      />
-      <View style={{width: 200, height: 250, alignItems: 'center'}}>
-        <RequestButton
-          text="재료 보기"
-          size={20}
-          style={{ width: 200, height: 200}}
-          onPress={() => navigation.navigate('MyKitchenState')}/>
+    <View>
+      <AppHeader title={"맞춤혼밥"} />
+      <View style={[padding.horizontal(safe.horizontal), column]}>
+        <View style={[padding.vertical(8)]}>
+          <Text style={[text.h3]}>내 재료</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {myIngredients.map((ingredient, index) => (
+              <Tag
+                key={index}
+                value={ingredient.ingredientName}
+                size={14}
+                color={colors.primary}
+                textColor={colors.black}
+                style={{ margin: 5 }} // You can adjust margin if needed
+              />
+            ))}
+          </View>
+        </View>
+        <View style={[padding.vertical(8)]}>
+          <Text style={[text.h3]}>내 조리도구</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {myCookers.map((cooker, index) => (
+              <Tag
+                key={index}
+                value={cooker.cookerName}
+                size={14}
+                color={colors.primary}
+                textColor={colors.primaryDark}
+                style={{ margin: 5 }} // Add some margin around each tag
+              />
+            ))}
+          </View>
+        </View>
+        <View style={[padding.vertical(8)]}>
+          <Text style={[text.h3]}>좋아요한 레시피</Text>
+          <ScrollView style={[row]} horizontal={true}>
+            {likeRecipes.map((recipe, index) => (
+              <VerticalRecipePreview
+                key={index}
+                recipe={recipe}
+                imgSrc={recipe.imgSrc}
+              />
+            ))}
+          </ScrollView>
+        </View>
       </View>
-      
-      <Text style={[text.sub1]}>좋아요한 레시피</Text>
     </View>
   );
 };

@@ -1,5 +1,5 @@
 export * from "./TextInput";
-export * from "./HoriziontalRecipePreview";
+export * from "./HorizontalRecipePreview";
 export * from "./ExpandedPreview";
 export * from "./RequestButton";
 export * from "./EllipticalText";
