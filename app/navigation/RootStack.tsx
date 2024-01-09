@@ -32,7 +32,7 @@ export const RootStack: React.FC = () => {
           </View>
         }
       >
-        <Stack.Navigator initialRouteName="HomeTab">
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             name="HomeTab"
             component={HomeTab}
@@ -45,8 +45,8 @@ export const RootStack: React.FC = () => {
           <Stack.Screen name="ResultRecommend" component={ResultRecommend}/>
           <Stack.Screen name="RecommendKitchenState" component={RecommendedKitchenState}/>
           <Stack.Screen name="SignUp" component={SignUp}/>
-          <Stack.Screen name="Intro" component={Intro}/>
-          <Stack.Screen name="WebViewScreen" component={WebViewScreen}/>
+          <Stack.Screen name="Login" component={Intro} options={{headerShown:false}}/>
+          <Stack.Screen name="kakaoLogin" component={WebViewScreen}/>
 
         </Stack.Navigator>
       </React.Suspense>

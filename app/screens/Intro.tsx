@@ -69,7 +69,7 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({
         // Handle the response which contains the Kakao login URL
         const loginUrl = response.url;
         // Navigate to WebViewScreen with the login URL
-        navigation.navigate("WebViewScreen", { loginUrl });
+        navigation.navigate("kakaoLogin", { loginUrl });
       },
       (error) => {
         // Handle any errors here

@@ -31,7 +31,7 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
         `users/${userID}`,
         (response) => {
           console.log("Unsubscribed successfully:", response);
-          navigation.navigate('Intro'); // Navigate to Intro screen
+          navigation.navigate('Login'); // Navigate to Intro screen
         },
         (error) => {
           console.error("Error during unsubscribe:", error);
@@ -43,7 +43,7 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('userID'); // Remove userID from AsyncStorage
-      navigation.navigate('Intro'); // Navigate to Intro screen
+      navigation.navigate('Login'); // Navigate to Intro screen
     } catch (error) {
       console.error("Error during logout:", error);
     }
