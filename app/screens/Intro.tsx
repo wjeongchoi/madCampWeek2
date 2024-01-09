@@ -25,7 +25,7 @@ export const Intro: React.FC<RootStackScreenProps<"Intro">> = ({navigation}) => 
             const userID = response.userID;
             await AsyncStorage.setItem('userID', userID);
             console.log("Login successful, userID stored");
-            navigation.navigate("HomeTab");
+            navigation.navigate("ResultRecommend");
 
         },
         (error) => {

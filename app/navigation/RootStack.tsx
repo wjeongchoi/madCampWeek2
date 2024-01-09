@@ -32,7 +32,7 @@ export const RootStack: React.FC = () => {
           </View>
         }
       >
-        <Stack.Navigator initialRouteName="Intro">
+        <Stack.Navigator initialRouteName="HomeTab">
           <Stack.Screen
             name="HomeTab"
             component={HomeTab}

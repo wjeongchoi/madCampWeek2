@@ -1,7 +1,8 @@
 export const colors = {
-    primary: "#eba12a",
-    primaryTrans: "#eba12a66",
+    primary: "#FFCA0F",
+    primaryTrans: "#EBFFCA0F",
     primaryTransLight: "#eba12a33",
+    black: "#000000",
     white: "#ffffff",
     gray50: "#f6f6f6",
     gray100: "#ececec",
