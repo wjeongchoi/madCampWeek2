@@ -10,7 +10,7 @@ interface CustomButtonProps extends TouchableOpacityProps {
   iconName?: string;
 }
 
-export const ReqestButton: React.FC<CustomButtonProps> = ({ onPress, text, size, iconName, style, ...props }) => {
+export const RequestButton: React.FC<CustomButtonProps> = ({ onPress, text, size, iconName, style, ...props }) => {
   return (
     <TouchableOpacity style={[
       {borderRadius: (size * 0.5), 
@@ -31,4 +31,4 @@ export const ReqestButton: React.FC<CustomButtonProps> = ({ onPress, text, size,
 };
 
 
-export default ReqestButton;
+export default RequestButton;

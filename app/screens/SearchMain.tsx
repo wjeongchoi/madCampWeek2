@@ -39,8 +39,10 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})
           recipes.map((recipe : Recipe, index) => {
             return (
               <TouchableOpacity onPress={() => {
-                const recipeId= recipe.recipeID;
-                navigation.navigate('OwnRecipe', { recipeId: recipeId } as { recipeId: string });
+                recipe.manId ? 
+                navigation.navigate('ManRecipe', { recipeId: recipe.recipeID } as { recipeId: string }) :
+                navigation.navigate('OwnRecipe', { recipeId: recipe.recipeID } as { recipeId: string });
+              
               }}>
                 <HoriziontalRecipePreview imgPath={'https://podicmaster.cdn3.cafe24.com/artworks/0094.png'}
                 style={{backgroundColor: colors.gray50}}

@@ -26,7 +26,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onPress, onChangeText, val
         <TextInput
             keyboardType="web-search"
             onChangeText={onChangeText}
-            placeholder={placeholder ? "검색ㄱ" : placeholder}
+            placeholder={placeholder ? "검색" : placeholder}
             value={value}
             style={{fontSize: (size * 0.7), marginLeft: (size * 0.3)}}/>  
     </View>

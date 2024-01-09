@@ -54,6 +54,9 @@ export const ResultRecommend: React.FC<RootStackScreenProps<"MyKitchenState">> =
           return (
             <TouchableOpacity onPress={() => {
               const recipeId= recipe.recipeID;
+              
+              recipe.manId ? 
+              navigation.navigate('ManRecipe', { recipeId: recipeId } as { recipeId: string }) :
               navigation.navigate('OwnRecipe', { recipeId: recipeId } as { recipeId: string });
             }}>
               <HoriziontalRecipePreview imgPath={'https://podicmaster.cdn3.cafe24.com/artworks/0094.png'} 
