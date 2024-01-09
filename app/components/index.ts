@@ -5,4 +5,5 @@ export * from "./RequestButton";
 export * from "./EllipticalText";
 export * from "./SearchBar";
 export * from "./Tag";
+export * from "./RecipeDetail";
 export * from "./AppHeader";

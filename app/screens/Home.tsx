@@ -3,6 +3,7 @@ import { View, Text, Button } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { HomeTabScreenProps } from '../navigation/types';
 import { colors, text } from '../styles';
+import { RequestButton, SearchBar } from '../components';
 import { AppHeader, ReqestButton, SearchBar } from '../components';
 import { getRequest } from '../axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,7 +49,7 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
         placeholder={"레시피를 검색해보세요"}
       />
       <View style={{width: 200, height: 250, alignItems: 'center'}}>
-        <ReqestButton
+        <RequestButton
           text="재료 보기"
           size={20}
           style={{ width: 200, height: 200}}
