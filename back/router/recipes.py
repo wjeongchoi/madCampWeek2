@@ -127,9 +127,9 @@ def get_recipe_cookers(recipe_id: str, skip: int = 0, limit: int = 100,db: Sessi
         response_data.append(c)
     return response_data
 
-@recipe.get("/{ingredient_id}/ingredients", response_model=List[schemas.Ingredient])
-def get_recipe_cookers(ingredient_id: str, skip: int = 0, limit: int = 100,db: Session = Depends(get_db)):
-    ingredients = db.query(models.t_recipeWithIngredient).filter(models.Ingredient.ingredientID == ingredient_id).offset(skip).limit(limit).all()
+@recipe.get("/{recipe_id}/ingredients", response_model=List[schemas.Ingredient])
+def get_recipe_cookers(recipe_id: str, skip: int = 0, limit: int = 100,db: Session = Depends(get_db)):
+    ingredients = db.query(models.t_recipeWithIngredient).filter(models.Recipe.recipeID == recipe_id).offset(skip).limit(limit).all()
     response_data = []
     for ingredient in ingredients:
         i = db.query(models.Ingredient).filter(models.Ingredient.ingredientID == ingredient.ingredientID).first()
