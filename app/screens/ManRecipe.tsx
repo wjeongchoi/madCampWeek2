@@ -150,14 +150,22 @@ export const ManRecipe = ({ route }) => {
             </View>
           </View>
         </ScrollView>
-        <RequestButton
+        <TouchableOpacity
           onPress={() => {
             const url = `https://www.10000recipe.com/recipe/${manId}`;
             Linking.openURL(url);
           }}
-          text={"만개의 레시피 바로가기"}
-          size={26}
-        />
+        >
+          <Image
+            style={{
+              width: 200,
+              height: 50,
+              overflow: "hidden",
+            }}
+            source={require("../assets/ManRecipeButton.png")}
+          />
+        </TouchableOpacity>
+
       </SafeAreaView>
     </View>
   );
