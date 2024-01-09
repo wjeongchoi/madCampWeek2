@@ -18,6 +18,8 @@ export const VerticalRecipePreview: React.FC<VerticalRecipeProps> = ({
   ...props
 }) => {
   const imageSource = imgSrc ? { uri: imgSrc } : placeholderImage;
+  const levelText = ['누구나', '초급', '중급', '고급', '상급'];
+
   return (
     <View
       style={[
@@ -40,7 +42,7 @@ export const VerticalRecipePreview: React.FC<VerticalRecipeProps> = ({
         text={recipe.title}
       />
       <Text>조리시간: {String(recipe.cookTime)}분 이내</Text>
-      <Text>난이도: {String(recipe.level)}</Text>
+      <Text>난이도: {levelText[recipe.level]}</Text>
     </View>
   );
 };
