@@ -31,7 +31,7 @@ export const ManRecipe = ({recipeId} : {recipeId: string}) => {
 
   return (
     <View style={{alignItems: 'center', flexDirection: 'column' }}>
-      <AppHeader title={'헤더 텍스트'}/>
+      <AppHeader title={'만개의 레시피'}/>
       <Image source={require('../assets/icon.png')}
           style={{  width: 120, height: 120, marginRight: 10  }}/>
       <View >

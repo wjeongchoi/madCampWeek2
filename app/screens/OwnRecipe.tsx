@@ -30,7 +30,7 @@ export const OwnRecipe = ({ route } ) => {
 
   return (
     <View style={{ flex: 1}}>
-      <AppHeader title={'헤더 텍스트'}/>
+      <AppHeader title={'유저 레시피'}/>
       <Text style={{fontSize: 24, textAlign: 'left', alignContent: 'flex-start', margin: 10}}>{title}</Text>
       <Text style={{fontSize: 18, margin: 10}}>{subTitle}</Text>
       <View> 
