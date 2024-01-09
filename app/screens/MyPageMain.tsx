@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, Alert, Button, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Alert,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteRequest, getRequest } from "../axios";
 import {
@@ -11,6 +19,7 @@ import {
   row,
   padding,
   safe,
+  colors,
 } from "../styles";
 import { HomeTabScreenProps } from "../navigation/types";
 import { UserData } from "../types/user"; // Assuming Recipe is a type defined in your types
@@ -21,6 +30,7 @@ import {
   HorizontalRecipePreview,
 } from "../components";
 import { VerticalRecipePreview } from "../components/VerticalRecipePreview";
+import defaultImage from "../assets/logo2.png"; // Adjust the path as necessary
 
 export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
   navigation,
@@ -108,12 +118,12 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
         {userData && (
           <>
             <View style={[row, gap(12)]}>
-              {userData.imgSrc && (
-                <Image
-                  source={{ uri: userData.imgSrc }}
-                  style={{ width: 100, height: 100 }}
-                />
-              )}
+              <Image
+                source={
+                  userData.imgSrc ? { uri: userData.imgSrc } : defaultImage
+                }
+                style={{ width: 80, height: 80 }} // Adjust styles as needed
+              />
               <View style={[column, justify.between, align.start]}>
                 <Text style={[text.body1]}>이메일: {userData.email}</Text>
                 <Text style={[text.body1]}>이름: {userData.name}</Text>
@@ -124,8 +134,41 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
             </View>
           </>
         )}
-        <Button title="로그아웃" onPress={handleLogout} />
-        <Button title="회원탈퇴" onPress={handleUnsubscribe} />
+        <View style={[row, justify.center, gap(30), padding.vertical(10)]}>
+          <TouchableOpacity
+            style={[
+              {
+                borderRadius: 10,
+                backgroundColor: colors.primaryLight,
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+                height: 40,
+                width: 100,
+              },
+            ]}
+            onPress={handleLogout}
+          >
+            <Text style={[text.body2]}>로그아웃</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              {
+                borderRadius: 10,
+                backgroundColor: colors.primaryLight,
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+                height: 40,
+                width: 100,
+              },
+            ]}
+            onPress={handleUnsubscribe}
+          >
+            <Text style={[text.body2]}>회원 탈퇴</Text>
+          </TouchableOpacity>
+        </View>
+
         <RequestButton
           onPress={() => {
             navigation.navigate("MyKitchenState");
