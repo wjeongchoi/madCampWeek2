@@ -65,7 +65,7 @@ export const SignUp: React.FC<RootStackScreenProps<"SignUp">> = ({
         } catch (error) {
           console.error("Error storing the userID:", error);
         }
-        navigation.navigate("Intro");
+        navigation.navigate("Login");
       },
       (error) => {
         console.log(email, userID, password, nickname);
