@@ -14,6 +14,7 @@ export const colors = {
     red400: "#f83535",
     warning: "#FF5050",
     warningTrans: "#FF505033",
+    like: "#FF002E",
   } as const;
   
   export type ColorKeys = keyof typeof colors;
