@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, Button, Linking , TouchableOpacity, Image } from 'react-native';
 import { text } from '../styles';
 import { getRequest } from '../axios';
+import { AppHeader } from '../components';
 
 
 export const ManRecipe = ({recipeId} : {recipeId: string}) => {
@@ -30,6 +31,7 @@ export const ManRecipe = ({recipeId} : {recipeId: string}) => {
 
   return (
     <View style={{alignItems: 'center', flexDirection: 'column' }}>
+      <AppHeader title={'만개의 레시피'}/>
       <Image source={require('../assets/icon.png')}
           style={{  width: 120, height: 120, marginRight: 10  }}/>
       <View >

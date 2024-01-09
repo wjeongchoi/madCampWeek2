@@ -251,8 +251,8 @@ def get_my_like_recipes(user_id: str, skip: int = 0, limit: int = 100, db: Sessi
 
 # get my recipes
 @user.get("/{user_id}/recipes", response_model=List[schemas.Recipe])
-def get_my_recipes(user_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    myRecipes = db.query(models.MyCookers).filter(models.User.userID == user_id).offset(skip).limit(limit).all()
+def get_my_recipes(user_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    myRecipes = db.query(models.t_myRecipes).filter(models.User.userID == user_id).offset(skip).limit(limit).all()
     response_data = []
     for myRecipe in myRecipes:
         m = db.query(models.Recipe).filter(models.Recipe.recipeID == myRecipe.recipeID).first()

@@ -32,6 +32,7 @@ export const HomeTab: React.FC = () => {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="search" color={color} size={size}/>
             ),
+            headerShown: false,
           }}
         />
         <Tab.Screen 
@@ -41,6 +42,7 @@ export const HomeTab: React.FC = () => {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="md-flask" color={color} size={size} />
             ),
+            headerShown: false,
           }}
         />
         <Tab.Screen
@@ -50,6 +52,7 @@ export const HomeTab: React.FC = () => {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="home" color={color} size={size} />
             ),
+            headerShown: false,
           }}
         />
         <Tab.Screen
@@ -59,6 +62,7 @@ export const HomeTab: React.FC = () => {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="md-people" color={color} size={size} />
             ),
+            headerShown: false,
           }}
         />
         <Tab.Screen
@@ -68,7 +72,7 @@ export const HomeTab: React.FC = () => {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="md-person-sharp" color={color} size={size} />
             ),
-            headerShown: true,
+            headerShown: false,
           }}
         />
       </Tab.Navigator>

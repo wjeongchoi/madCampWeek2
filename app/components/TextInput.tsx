@@ -33,7 +33,7 @@ export const TextInput: React.FC<{
   return (
     <View style={[gap(6)]}>
       {title && (
-        <Text style={[margin.left(4), text.sub2, text.gray600]}>{title}</Text>
+        <Text style={[margin.left(4), text.sub1, text.gray600]}>{title}</Text>
       )}
       <View
         style={[
@@ -41,7 +41,7 @@ export const TextInput: React.FC<{
           align.center,
           gap(10),
           round.md,
-          padding.vertical(18),
+          padding.vertical(10),
           padding.horizontal(16),
           bg.gray50,
         ]}
