@@ -4,6 +4,7 @@ import { text, colors } from '../styles';
 import { getRequest } from '../axios'
 import { EllipticalText, Tag, RecipeDetail } from '../components';
 import { DetailRecipe } from '../types/detailRecipe';
+import { AppHeader } from '../components';
 
 export const OwnRecipe = ({ route } ) => {
   const { recipeId } = route.params;
@@ -119,6 +120,7 @@ export const OwnRecipe = ({ route } ) => {
                style={{width: 100}}/> 
           </View>
         </View>
+
       </View>
       <View>
         {

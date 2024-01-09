@@ -118,6 +118,25 @@ def get_recipe_details(recipe_id: str, db: Session = Depends(get_db)):
 
     return details
 
+@recipe.get("/{recipe_id}/cookers", response_model=List[schemas.Cooker])
+def get_recipe_cookers(recipe_id: str, skip: int = 0, limit: int = 100,db: Session = Depends(get_db)):
+    cookers = db.query(models.t_recipeWithCooker).filter(models.Recipe.recipeID == recipe_id).offset(skip).limit(limit).all()
+    response_data = []
+    for cooker in cookers:
+        c = db.query(models.Cooker).filter(models.Cooker.cookerID == cooker.cookerID).first()
+        response_data.append(c)
+    return response_data
+
+@recipe.get("/{recipe_id}/ingredients", response_model=List[schemas.Ingredient])
+def get_recipe_cookers(recipe_id: str, skip: int = 0, limit: int = 100,db: Session = Depends(get_db)):
+    ingredients = db.query(models.t_recipeWithIngredient).filter(models.Recipe.recipeID == recipe_id).offset(skip).limit(limit).all()
+    response_data = []
+    for ingredient in ingredients:
+        i = db.query(models.Ingredient).filter(models.Ingredient.ingredientID == ingredient.ingredientID).first()
+        response_data.append(i)
+    return response_data
+
+
 @recipe.get("/search", response_model=List[schemas.Recipe])
 def search_recipes(name: str = Query(None, min_length=1), db: Session = Depends(get_db)):
     # Searching for recipes by name

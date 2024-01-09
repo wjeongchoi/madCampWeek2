@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Alert, Button } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { deleteRequest, getRequest } from '../axios';
-import { column, text,gap, justify, align, row} from '../styles';
-import { HomeTabScreenProps } from '../navigation/types';
-import { UserData } from '../types/user';
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, Alert, Button } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { deleteRequest, getRequest } from "../axios";
+import { column, text, gap, justify, align, row, padding, safe } from "../styles";
+import { HomeTabScreenProps } from "../navigation/types";
+import { UserData } from "../types/user";
+import { AppHeader, ReqestButton } from "../components";
+import { ScrollView } from "react-native-gesture-handler";
 
-export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation }) => {
+export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
+  navigation,
+}) => {
   const [userData, setUserData] = useState<UserData | null>(null);
 
   const handleUnsubscribe = () => {
@@ -17,21 +21,21 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
         {
           text: "취소",
           onPress: () => console.log("Cancel Unsubscribe"),
-          style: "cancel"
+          style: "cancel",
         },
-        { text: "확인", onPress: () => unsubscribeUser() }
+        { text: "확인", onPress: () => unsubscribeUser() },
       ]
     );
   };
 
   const unsubscribeUser = async () => {
-    const userID = await AsyncStorage.getItem('userID');
+    const userID = await AsyncStorage.getItem("userID");
     if (userID) {
       deleteRequest(
         `users/${userID}`,
         (response) => {
           console.log("Unsubscribed successfully:", response);
-          navigation.navigate('Intro'); // Navigate to Intro screen
+          navigation.navigate("Login"); // Navigate to Intro screen
         },
         (error) => {
           console.error("Error during unsubscribe:", error);
@@ -42,8 +46,8 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem('userID'); // Remove userID from AsyncStorage
-      navigation.navigate('Intro'); // Navigate to Intro screen
+      await AsyncStorage.removeItem("userID"); // Remove userID from AsyncStorage
+      navigation.navigate("Login"); // Navigate to Intro screen
     } catch (error) {
       console.error("Error during logout:", error);
     }
@@ -52,7 +56,7 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userID = await AsyncStorage.getItem('userID');
+        const userID = await AsyncStorage.getItem("userID");
         console.log("UserID from AsyncStorage:", userID); // Ensure UserID is retrieved
 
         if (userID) {
@@ -79,27 +83,41 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({ navigation 
   console.log("Current UserData State:", userData); // Log the current state
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap:12 }}>
-      {userData && (
-        <>
-          <View style={[row,gap(12)]}>
-            {userData.imgSrc && <Image source={{ uri: userData.imgSrc }} style={{ width: 100, height: 100 }} />}
-            <View style={[column,justify.between,align.start]}>
-              <Text style={[text.body1]}>이메일: {userData.email}</Text>
-              <Text style={[text.body1]}>이름: {userData.name}</Text>
-              <Text style={[text.body1]}>가입 날짜: {userData.createdTime}</Text>
+    <View style={{ flex: 1, gap: 12 }}>
+      <AppHeader title={"마이페이지"} />
+      <ScrollView style={[padding.horizontal(safe.horizontal), gap(16)]}>
+        <Text style={[text.h3, justify.start]}>계정</Text>
+        {userData && (
+          <>
+            <View style={[row, gap(12)]}>
+              {userData.imgSrc && (
+                <Image
+                  source={{ uri: userData.imgSrc }}
+                  style={{ width: 100, height: 100 }}
+                />
+              )}
+              <View style={[column, justify.between, align.start]}>
+                <Text style={[text.body1]}>이메일: {userData.email}</Text>
+                <Text style={[text.body1]}>이름: {userData.name}</Text>
+                <Text style={[text.body1]}>
+                  가입 날짜: {userData.createdTime}
+                </Text>
+              </View>
             </View>
-          </View>
-        </>
-      )}
-      <Button
-        title="로그아웃"
-        onPress={handleLogout}
-      />
-      <Button
-        title="회원탈퇴"
-        onPress={handleUnsubscribe}
-      />
+          </>
+        )}
+        <Button title="로그아웃" onPress={handleLogout} />
+        <Button title="회원탈퇴" onPress={handleUnsubscribe} />
+        <ReqestButton
+          onPress={() => {
+            navigation.navigate("MyKitchenState");
+          }}
+          size={20}
+          text="내 재료 확인하기"
+          iconName="restaurant-sharp"
+          style={{ marginHorizontal: 30 }}
+        />
+      </ScrollView>
     </View>
   );
-}
+};

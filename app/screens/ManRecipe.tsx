@@ -5,6 +5,7 @@ import { getRequest } from '../axios';
 import { EllipticalText, Tag, RequestButton } from '../components';
 import { Ingredient } from '../types/ingredient';
 import { Cooker } from '../types/cooker';
+import { AppHeader } from '../components';
 
 export const ManRecipe = ({ route }) => {
   const { recipeId } = route.params;
@@ -101,6 +102,7 @@ export const ManRecipe = ({ route }) => {
           }
           
         </View>
+
         <View style={{flexDirection: 'row',
                       justifyContent: 'space-evenly',
                       alignItems: 'center',

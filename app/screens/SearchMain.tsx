@@ -4,7 +4,7 @@ import { HomeTabScreenProps } from '../navigation/types';
 import { border, colors, text } from '../styles';
 import { getRequest } from '../axios';
 import { Recipe } from '../types';
-import { SearchBar, HoriziontalRecipePreview } from '../components';
+import { SearchBar, HoriziontalRecipePreview, AppHeader } from '../components';
 
 export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})=> {
   const [recipes, setRecipes] = useState([]);
@@ -22,7 +22,8 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})
     )
   },[])
   return (
-    <SafeAreaView style={{ flex: 1, marginTop: 50 }}>
+    <View style={{ flex: 1 }}>
+      <AppHeader title={'레시피 검색'}/>
       <View style={{ marginTop: 10, flexDirection: "row", justifyContent: 'center', 
       alignContent: 'center'
        }}>
@@ -52,6 +53,6 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})
           })
         }
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

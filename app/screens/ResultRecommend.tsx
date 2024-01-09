@@ -4,7 +4,7 @@ import { RootStackScreenProps } from '../navigation/types';
 import {colors, text} from '../styles';
 import { Ionicons } from '@expo/vector-icons';
 import { getRequest } from '../axios';
-import { HoriziontalRecipePreview} from "../components";
+import { AppHeader, HoriziontalRecipePreview} from "../components";
 import { Recipe } from '../types';
 
 export const ResultRecommend: React.FC<RootStackScreenProps<"MyKitchenState">> = ({navigation})=> {
@@ -24,10 +24,14 @@ export const ResultRecommend: React.FC<RootStackScreenProps<"MyKitchenState">> =
     // )
   },[])
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
+      <AppHeader title={'유저 레시피'}/>
       <View style={{ flexDirection: 'row', marginLeft: 10}}>
-        <Text style={[text.h1]}>당신을 위한 레시피 {/* terperal icon*/}</Text>
-        <Ionicons name="heart" size={30} />
+        <Text style={[text.h1]}>당신을 위한 레시피</Text>
+        <Image
+        source={require("../assets/sparkles.png")}
+        style={{ width: 25, height: 25 }}
+      />
       </View>
       <View style={{flexDirection: "row", 
       marginLeft: 10,
@@ -69,6 +73,6 @@ export const ResultRecommend: React.FC<RootStackScreenProps<"MyKitchenState">> =
 
     </ScrollView>
      
-    </SafeAreaView>
+    </View>
   );
 }
