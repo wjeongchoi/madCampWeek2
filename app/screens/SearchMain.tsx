@@ -4,7 +4,7 @@ import { HomeTabScreenProps } from '../navigation/types';
 import { border, colors, text } from '../styles';
 import { getRequest } from '../axios';
 import { Recipe } from '../types';
-import { SearchBar, HoriziontalRecipePreview, AppHeader } from '../components';
+import { SearchBar, HorizontalRecipePreview, AppHeader } from '../components';
 
 export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})=> {
   const [recipes, setRecipes] = useState([]);
@@ -45,7 +45,7 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({navigation})
                 navigation.navigate('OwnRecipe', { recipeId: recipe.recipeID } as { recipeId: string });
               
               }}>
-                <HoriziontalRecipePreview imgPath={'https://podicmaster.cdn3.cafe24.com/artworks/0094.png'}
+                <HorizontalRecipePreview imgPath={'https://podicmaster.cdn3.cafe24.com/artworks/0094.png'}
                 style={{backgroundColor: colors.gray50}}
                 recipe={recipe} />
               </TouchableOpacity>

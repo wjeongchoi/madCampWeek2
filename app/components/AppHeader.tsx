@@ -10,7 +10,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ title }) => {
     <View
       style={{ backgroundColor: colors.primary, height: 120, width: "100%", justifyContent:"center" }}
     >
-      <Text style={[text.h2, {paddingLeft: 24}, {paddingTop:50}]}>{title}</Text>
+      <Text style={[text.h2, {paddingLeft: 24}, {paddingTop:50}, {color: colors.primaryDark}]}>{title}</Text>
     </View>
   );
 };

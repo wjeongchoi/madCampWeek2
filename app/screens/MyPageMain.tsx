@@ -1,17 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, Alert, Button } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Alert,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteRequest, getRequest } from "../axios";
-import { column, text, gap, justify, align, row, padding, safe } from "../styles";
+import {
+  column,
+  text,
+  gap,
+  justify,
+  align,
+  row,
+  padding,
+  safe,
+  colors,
+} from "../styles";
 import { HomeTabScreenProps } from "../navigation/types";
-import { UserData } from "../types/user";
-import { AppHeader, ReqestButton } from "../components";
-import { ScrollView } from "react-native-gesture-handler";
+import { UserData } from "../types/user"; // Assuming Recipe is a type defined in your types
+import { Recipe } from "../types/recipe";
+import {
+  AppHeader,
+  RequestButton,
+  HorizontalRecipePreview,
+} from "../components";
+import { VerticalRecipePreview } from "../components/VerticalRecipePreview";
+import defaultImage from "../assets/logo2.png"; // Adjust the path as necessary
 
 export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
   navigation,
 }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [likeRecipes, setLikeRecipes] = useState<Recipe[]>([]);
+  const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
 
   const handleUnsubscribe = () => {
     Alert.alert(
@@ -60,6 +86,8 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
         console.log("UserID from AsyncStorage:", userID); // Ensure UserID is retrieved
 
         if (userID) {
+          getRequest(`users/${userID}/like/recipes`, setLikeRecipes);
+          getRequest(`users/${userID}/recipes`, setMyRecipes);
           getRequest(
             `users/${userID}`,
             (response) => {
@@ -90,12 +118,12 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
         {userData && (
           <>
             <View style={[row, gap(12)]}>
-              {userData.imgSrc && (
-                <Image
-                  source={{ uri: userData.imgSrc }}
-                  style={{ width: 100, height: 100 }}
-                />
-              )}
+              <Image
+                source={
+                  userData.imgSrc ? { uri: userData.imgSrc } : defaultImage
+                }
+                style={{ width: 80, height: 80 }} // Adjust styles as needed
+              />
               <View style={[column, justify.between, align.start]}>
                 <Text style={[text.body1]}>이메일: {userData.email}</Text>
                 <Text style={[text.body1]}>이름: {userData.name}</Text>
@@ -106,9 +134,42 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
             </View>
           </>
         )}
-        <Button title="로그아웃" onPress={handleLogout} />
-        <Button title="회원탈퇴" onPress={handleUnsubscribe} />
-        <ReqestButton
+        <View style={[row, justify.center, gap(30), padding.vertical(10)]}>
+          <TouchableOpacity
+            style={[
+              {
+                borderRadius: 10,
+                backgroundColor: colors.primaryLight,
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+                height: 40,
+                width: 100,
+              },
+            ]}
+            onPress={handleLogout}
+          >
+            <Text style={[text.body2]}>로그아웃</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              {
+                borderRadius: 10,
+                backgroundColor: colors.primaryLight,
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+                height: 40,
+                width: 100,
+              },
+            ]}
+            onPress={handleUnsubscribe}
+          >
+            <Text style={[text.body2]}>회원 탈퇴</Text>
+          </TouchableOpacity>
+        </View>
+
+        <RequestButton
           onPress={() => {
             navigation.navigate("MyKitchenState");
           }}
@@ -117,6 +178,25 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
           iconName="restaurant-sharp"
           style={{ marginHorizontal: 30 }}
         />
+        <Text style={[text.h3, justify.start]}>좋아요한 레시피</Text>
+        <ScrollView style={[row]} horizontal={true}>
+          {likeRecipes.map((recipe, index) => (
+            <VerticalRecipePreview
+              key={index}
+              recipe={recipe}
+              imgSrc={recipe.imgSrc}
+            />
+          ))}
+        </ScrollView>
+
+        <Text style={[text.h3, justify.start]}>내가 올린 레시피</Text>
+        {myRecipes.map((recipe, index) => (
+          <HorizontalRecipePreview
+            key={index}
+            recipe={recipe}
+            imgPath={recipe.imgSrc}
+          />
+        ))}
       </ScrollView>
     </View>
   );

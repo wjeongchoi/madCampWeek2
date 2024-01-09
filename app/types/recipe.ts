@@ -7,4 +7,5 @@ export interface Recipe {
     like: number,
     writedTime: number,
     level: number,
+    imgSrc: string,
   }
