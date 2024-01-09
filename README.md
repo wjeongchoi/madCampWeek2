@@ -18,14 +18,9 @@ Download HERE!
 <img src="https://img.shields.io/badge/React Native-61DAFB?style=flat-square&logo=React&logoColor=white"/>
 <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=FastAPI&logoColor=white"/>
 
- mySQL 8.0.35
- 
- fastAPI: 0.108.0
- 
- react native: 0.72.6
- 
- - Languege: type script, python
- - Framework: React Native, FastAPI
+ - Language : Python 3.10.11, Typescript: 5.3.3
+ - DB: mySQL 8.0.35
+ - Framework: React Native: 0.72.6, fastAPI 0.108.0
  - IDE: VScode
  - Target Device: Galaxy S7
 
@@ -90,12 +85,13 @@ Download HERE!
 |  | 레시피의 재료 삭제 |
 
 ## D. 어플리케이션 소개
+자취생들을 위한 
 
 ### 0. 인트로
 
 
 ### 1. Search
-전체 레시피를 추천받을 수 있음
+전체 레시피를 추천받을 수 있습니다.
 
 ### 2. Recommand
 내가 가지고 있는 재료와 조리도구를 기반으로 레시피를 추천 받을 수 있음
