@@ -42,43 +42,61 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
         <View style={[padding.vertical(8)]}>
           <Text style={[text.h3]}>내 재료</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {myIngredients.map((ingredient, index) => (
-              <Tag
-                key={index}
-                value={ingredient.ingredientName}
-                size={14}
-                color={colors.primary}
-                textColor={colors.black}
-                style={{ margin: 5 }} // You can adjust margin if needed
-              />
-            ))}
+            {myIngredients.length > 0 ? (
+              myIngredients.map((ingredient, index) => (
+                <Tag
+                  key={index}
+                  value={ingredient.ingredientName}
+                  size={14}
+                  color={colors.primary}
+                  textColor={colors.black}
+                  style={{ margin: 5 }}
+                />
+              ))
+            ) : (
+              <Text style={[text.btn1, { color: colors.gray400 }]}>
+                ! 아직 비어있어요 !
+              </Text>
+            )}
           </View>
         </View>
         <View style={[padding.vertical(8)]}>
           <Text style={[text.h3]}>내 조리도구</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {myCookers.map((cooker, index) => (
-              <Tag
-                key={index}
-                value={cooker.cookerName}
-                size={14}
-                color={colors.primary}
-                textColor={colors.primaryDark}
-                style={{ margin: 5 }} // Add some margin around each tag
-              />
-            ))}
+            {myCookers.length > 0 ? (
+              myCookers.map((cooker, index) => (
+                <Tag
+                  key={index}
+                  value={cooker.cookerName}
+                  size={14}
+                  color={colors.primary}
+                  textColor={colors.primaryDark}
+                  style={{ margin: 5 }}
+                />
+              ))
+            ) : (
+              <Text style={[text.btn1, { color: colors.gray400 }]}>
+                ! 아직 비어있어요 !
+              </Text>
+            )}
           </View>
         </View>
         <View style={[padding.vertical(8)]}>
           <Text style={[text.h3]}>좋아요한 레시피</Text>
           <ScrollView style={[row]} horizontal={true}>
-            {likeRecipes.map((recipe, index) => (
-              <VerticalRecipePreview
-                key={index}
-                recipe={recipe}
-                imgSrc={recipe.imgSrc}
-              />
-            ))}
+            {likeRecipes.length > 0 ? (
+              likeRecipes.map((recipe, index) => (
+                <VerticalRecipePreview
+                  key={index}
+                  recipe={recipe}
+                  imgSrc={recipe.imgSrc}
+                />
+              ))
+            ) : (
+              <Text style={[text.btn1, { color: colors.gray400 }]}>
+                ! 아직 비어있어요 !
+              </Text>
+            )}
           </ScrollView>
         </View>
       </View>
