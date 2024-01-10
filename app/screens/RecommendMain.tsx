@@ -136,21 +136,21 @@ export const RecommendMain: React.FC<HomeTabScreenProps<"Recommend">> = ({
               borderRadius: 10,
               backgroundColor: colors.primary,
               padding: 10,
-              marginVertical: 10,
+              marginVertical: 12,
               justifyContent: "center",
               flexDirection: "row",
               alignItems: "center",
-              height: 60,
+              height: 50,
             },
           ]}
           onPress={() => navigation.navigate("RecommendKitchenState")}
         >
           <Ionicons
             name={"flask"}
-            size={30}
+            size={25}
             style={{ color: colors.primaryDark, marginRight: 8 }}
           />
-          <Text style={[text.sub1, { color: colors.primaryDark }]}>
+          <Text style={[text.sub2, { color: colors.primaryDark }]}>
             레시피 추천받기
           </Text>
         </TouchableOpacity>

@@ -33,6 +33,8 @@ import {
 } from "../components";
 import { VerticalRecipePreview } from "../components/VerticalRecipePreview";
 import defaultImage from "../assets/logo2.png"; // Adjust the path as necessary
+import { Ionicons } from "@expo/vector-icons";
+
 
 export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
   navigation,
@@ -170,16 +172,30 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
             <Text style={[text.body2]}>회원 탈퇴</Text>
           </TouchableOpacity>
         </View>
-
-        <RequestButton
-          onPress={() => {
-            navigation.navigate("MyKitchenState");
-          }}
-          size={20}
-          text="내 재료 확인하기"
-          iconName="restaurant-sharp"
-          style={{ marginHorizontal: 30 }}
-        />
+        <TouchableOpacity
+          style={[
+            {
+              borderRadius: 10,
+              backgroundColor: colors.primary,
+              padding: 10,
+              marginVertical: 8,
+              justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
+              height: 50,
+            },
+          ]}
+          onPress={() => navigation.navigate("MyKitchenState")}
+        >
+          <Ionicons
+            name={"restaurant-sharp"}
+            size={25}
+            style={{ color: colors.primaryDark, marginRight: 8 }}
+          />
+          <Text style={[text.sub2, { color: colors.primaryDark }]}>
+            내 재료 확인하기
+          </Text>
+        </TouchableOpacity>
         <View style={[padding.vertical(8)]}>
           <Text style={[text.h3, justify.start]}>좋아요한 레시피</Text>
           <ScrollView style={[row]} horizontal={true}>
