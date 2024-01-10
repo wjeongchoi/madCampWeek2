@@ -41,8 +41,11 @@ export const RecommendMain: React.FC<HomeTabScreenProps<"Recommend">> = ({
   useEffect(() => {
     const fetchRecipeCount = async () => {
       try {
-        const skip = Math.floor(Math.random() * 50000);
-        getRequest(`recipes?skip=${skip}&limit=5`, setRecommendedRecipes);
+        const skip = Math.floor(Math.random() * 10000);
+        getRequest(`recipes?skip=${skip}&limit=5`, (data) => {
+          console.log("Recommended Recipes:", data);
+          setRecommendedRecipes(data);
+        });
       } catch (error) {
         console.error("Error fetching recipe count:", error);
       }
@@ -64,10 +67,11 @@ export const RecommendMain: React.FC<HomeTabScreenProps<"Recommend">> = ({
       <AppHeader title={"레시피 추천"} />
       <View style={[padding.horizontal(safe.horizontal)]}>
         <View style={[padding.vertical(8)]}>
-          <Text style={[text.h3]}>오늘의 추천메뉴 </Text>
-          <ScrollView style={{ flexDirection: "row"}} horizontal>
+          <Text style={[text.h3, padding.top(4)]}>오늘의 추천메뉴 </Text>
+          <ScrollView style={{ flexDirection: "row" }} horizontal>
             {recommendedRecipes.map((recipe, index) => (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   recipe.manId
                     ? navigation.navigate("ManRecipe", {
