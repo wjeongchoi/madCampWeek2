@@ -8,7 +8,7 @@ import json
 import bcrypt
 import uuid
 from datetime import date
-from jose import JWTError, jwt
+from jose import jwt
 from logging import error
 
 
