@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getRequest } from "../axios";
@@ -17,12 +17,35 @@ import {
 import { VerticalRecipePreview } from "../components/VerticalRecipePreview";
 import { Ionicons } from "@expo/vector-icons";
 import { HomeTabScreenProps } from "../navigation/types";
+import { useFocusEffect } from "@react-navigation/native";
 
 export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
   const [userID, setUserID] = useState("");
   const [myIngredients, setMyIngredients] = useState([]);
   const [myCookers, setMyCookers] = useState([]);
   const [likeRecipes, setLikeRecipes] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const storedUserID = await AsyncStorage.getItem("userID");
+      if (storedUserID !== null) {
+        setUserID(storedUserID);
+        getRequest(`users/${storedUserID}/ingredients`, setMyIngredients);
+        getRequest(`users/${storedUserID}/cookers`, setMyCookers);
+        getRequest(`users/${storedUserID}/like/recipes`, setLikeRecipes);
+      }
+    } catch (e) {
+      console.error("Error fetching data: ", e);
+    }
+  };
+
+  // 화면 포커스 시 데이터 새로고침
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      return () => {};
+    }, [])
+  );
 
   useEffect(() => {
     const fetchUserID = async () => {
@@ -77,7 +100,11 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
             ]}
           >
             <Ionicons name="search" color={colors.gray500} size={20} />
-            <Text style={[margin.left(6), text.btn2, {color:colors.gray500}]}>레시피를 검색해보세요</Text>
+            <Text
+              style={[margin.left(6), text.btn2, { color: colors.gray500 }]}
+            >
+              레시피를 검색해보세요
+            </Text>
           </View>
         </TouchableOpacity>
 
@@ -86,7 +113,6 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {myIngredients.length > 0 ? (
               myIngredients.map((ingredient, index) => (
-                
                 <Tag
                   key={index}
                   value={ingredient.ingredientName}
