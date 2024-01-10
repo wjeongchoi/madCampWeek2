@@ -202,6 +202,7 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
             {likeRecipes.length > 0 ? (
               likeRecipes.map((recipe, index) => (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => {
                     recipe.manId
                       ? navigation.navigate("ManRecipe", {
