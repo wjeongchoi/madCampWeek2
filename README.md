@@ -1,7 +1,7 @@
 # 맞춤혼밥
-자취생들을 위한 레시피 추천 어플리케이션
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/8dbdda2a-0fa5-4ac2-8edf-7dccbedf64ad" width="300" height="300" />
 
-대표 이미지
+자취생들을 위한 레시피 추천 어플리케이션
 
 -----------------
 Download HERE!
@@ -14,9 +14,7 @@ Download HERE!
 - **최우정** KAIST 화학과 21학번
 
 ## B. 개발 환경
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>
-<img src="https://img.shields.io/badge/React Native-61DAFB?style=flat-square&logo=React&logoColor=white"/>
-<img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=FastAPI&logoColor=white"/>
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/> <img src="https://img.shields.io/badge/React Native-61DAFB?style=flat-square&logo=React&logoColor=white"/> <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=FastAPI&logoColor=white"/>
 
  - Language : Python 3.10.11, Typescript: 5.3.3
  - DB: mySQL 8.0.35
