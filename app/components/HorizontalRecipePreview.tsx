@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Image, ViewProps } from "react-native";
-import { colors, justify, padding, row, text } from "../styles";
+import { colors, gap, justify, padding, row, text } from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Recipe } from "../types";
 import placeholderImage from "../assets/logo2.png"; // Import your placeholder image
@@ -76,7 +76,7 @@ export const HorizontalRecipePreview: React.FC<HorizontalRecipeProps> = ({
           </Text>
         </View>
         <View
-          style={[row, justify.between, {width:300},{gap:16}]}
+          style={[row, justify.start, gap(16)]}
         >
           <Text style={{ fontSize: 12 }}>
             조리시간: {String(recipe.cookTime)}분 이내
@@ -84,31 +84,7 @@ export const HorizontalRecipePreview: React.FC<HorizontalRecipeProps> = ({
           <Text style={{ fontSize: 12 }}>
             난이도: {levelText[recipe.level]}
           </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              flex: 1,
-            }}
-            pointerEvents="none"
-          >
-            
-            <Ionicons
-              name="heart"
-              color={isLike ? colors.red400 : colors.gray100}
-              size={15}
-              onPress={likeToggle}
-            />
-            <Text
-              style={{
-                fontSize: 12,
-                color: colors.gray500,
-                alignItems: "center",
-                marginLeft: 5,
-              }}
-            >
-              {String(recipe.like)}
-            </Text>
-          </View>
+
         </View>
       </View>
     </View>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, Image, ViewProps } from "react-native";
-import { colors, text } from "../styles";
+import { align, colors, justify, text } from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Recipe } from "../types";
 import { EllipticalText } from "./EllipticalText";
@@ -30,10 +30,10 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
       style={[
         {
           flexDirection: "column",
-          margin: 10,
           backgroundColor: colors.gray50,
           borderRadius: 20,
           padding: 5,
+          marginVertical: 8,
         },
         style,
       ]}
@@ -42,7 +42,7 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
         style={{
           alignItems: "center",
           flexDirection: "row",
-          marginVertical: 10,
+          marginVertical: 5,
           justifyContent: "center",
         }}
       >
@@ -68,24 +68,23 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
+              alignItems:"center",
+              paddingBottom: 4
             }}
           >
             <Text style={[text.sub1]} numberOfLines={1} ellipsizeMode="tail">
               {recipe.title}
             </Text>
 
-            <View pointerEvents="none">
-              {/*             여기만 터치가 안되게 하고 싶은데 적용이 안됨 */}
-
-              <Ionicons
-                name="heart"
-                color={isLike ? colors.like : colors.gray100}
-                size={30}
-                onPress={() => {
-                  likeToggle;
-                }}
-              />
-            </View>
+            <Ionicons
+              name="heart"
+              color={isLike ? colors.like : colors.gray100}
+              size={30}
+              onPress={() => {
+                likeToggle;
+              }}
+              style={{paddingBottom: 4}}
+            />
           </View>
 
           <View
@@ -106,7 +105,7 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
       </View>
       <View>
         <Text
-          style={{ marginHorizontal: 10, paddingBottom:10 }}
+          style={{ marginHorizontal: 10, paddingBottom: 10 }}
           numberOfLines={2}
           ellipsizeMode="tail"
         >
