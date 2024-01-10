@@ -102,24 +102,48 @@ Download HERE!
 | recipes/details/{detail_id} | 레시피 디테일 삭제 |
 | ingredients/{ingredient_name} | 재료 삭제 |
 | cookers/{cooker_name} | 조리도구 삭제 |
-|  | 레시피의 조리도구 삭제 |
-|  | 레시피의 재료 삭제 |
+
 
 
 ## E. 어플리케이션 소개
 자취생들을 위한 레시피 추천 어플리케이션
 
+### 1. Login
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/928eb0df-ee8a-4bac-93a6-44c0ba12f588" width="300" height="650" />
 
-### 0. 인트로
+
+- 카카오 ouath를 이용한 로그인이 가능합니다.
+- 이메일/패스워드 기반의 로그인이 가능합니다.
+    - 로그인 관련 정보를 ```JWT토큰```을 사용해 암호화하여 관리합니다.
+- 로그인 시 사용자와 관련된 정보에 접근이 가능합니다.
+   - 내 재료/조리도구 수정이 가능합니다.
+   - 레시피 업로드가 가능합니다.
+   - 이메일을 제외한 개인 정보 수정 가능합니다.
+ 
+
+### 2. Home
+
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/c2803459-029e-4e62-bb5e-0d2e83b5330f"  width="300" height="650" />
 
 
-### 1. Search
+-  내가 좋아요한 레시피/내 재료/내 조리도구를 한 눈에 볼 수 있는 화면입니다.
+-  검색 화면으로 바로 이동할 수 있습니다.
+
+
+### 3. Search
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/4e4d0908-abc2-45a9-9466-4e3a2ec10a2d"  width="300" height="650"  />
+
+
 전체 레시피를 추천받을 수 있습니다.
 만개의 레시피 API를 이용하여 
 메뉴이름을 통해 레시피를 검색할 수 있습니다.
 ~사용된 재료를 통해 레시피를 검색할 수 있습니다.~
 
-### 2. Recommand
+### 4. Recommend
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/3ac4d9cf-75bb-4413-953a-315ac8c87414"  width="300" height="650"  />
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/eb588eea-a987-411f-94b1-47b7bcf796ea"  width="300" height="650"  />
+
+
 - ```레시피 추천 메인```의 상단에 오늘의 추천 메뉴를 띄어줍니다.
 - 내가 가지고 있는 재료와 조리도구를 기반으로 레시피를 추천 받을 수 있습니다.
 - 재료와 조리도구를 태그형태로 추가해 레시피 추천을 받을 수 있습니다.
@@ -128,25 +152,21 @@ Download HERE!
 
 
 
-### 3. User's recipe
+### 5. User's recipe
+
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/bebe0e0a-9e04-4870-af59-f1839a14f476"  width="300" height="650" />
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/37ebeea4-7e63-4a4d-98ca-5d6aff51f9a9"  width="300" height="650"  />
+
 - 다른 사람들이 작성한 레시피를 볼 수 있습니다.
 - 좋아요를 눌러 내가 좋아요한 레시피를 한 눈에 볼 수 있습니다.
 - 상단의 ```내 레시피 등록하기```를 통해 레시피 등록화면으로 이동할 수 있습니다.
 - ```레시피 등록화면```에서 레시피를 등록할 수 있습니다.
 
+### 6. My Page
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/562b3e6b-b223-473f-88f8-acca4f9f02cd"  width="300" height="650"  />
+<img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/7c7772cd-daa1-4696-95d9-6ebc4240d37e"  width="300" height="650"  />
 
-### 4. Login
-- 카카오 ouath를 이용한 로그인이 가능합니다.
-- 이메일/패스워드 기반의 로그인이 가능합니다.
-    - 로그인 관련 정보를 ```JWT토큰```을 사용해 암호화하여 관리합니다.
-- 로그인 시 사용자와 관련된 정보에 접근이 가능합니다.
-   - 내 재료/조리도구 수정이 가능합니다.
-   - 레시피 업로드가 가능합니다.
-   - 이메일을 제외한 개인 정보 수정 가능합니다.
 
-### 5. Home
--  내가 좋아요한 레시피/내 재료/내 조리도구를 한 눈에 볼 수 있는 화면입니다.
-   - 
 
 ## F. 색상
 | 이름 | 색상 블럭 | 
