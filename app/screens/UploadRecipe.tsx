@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { border, colors, padding, safe, text } from "../styles";
+import { border, colors, column, padding, safe, text } from "../styles";
 import { RootStackScreenProps } from "../navigation/types";
 import { postRequest } from "../axios";
 import { AppHeader, Tag, RequestButton } from "../components";
@@ -17,7 +17,7 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
   const [ingradients, setIngradiants] = useState([]);
   const [ingradientInput, setIngradientInput] = useState("");
   const [level, setLevel] = useState(1);
-  const [cookTime, setCookTime] = useState(1);
+  const [cookTime, setCookTime] = useState("");
 
   const addCookerTag = (tag: string) => {
     setCookerInput(tag);
@@ -44,23 +44,34 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
       level: level,
       cookTime: cookTime,
     };
-    postRequest("recipes", sendDate, (responseData) => {
-      console.log(responseData, "ddd");
-      navigation.navigate("HomeTab");
-    }, (error) => {
-      console.error(error);
-    });
+    postRequest(
+      "recipes",
+      sendData,
+      (responseData) => {
+        console.log(responseData, "ddd");
+        navigation.navigate("HomeTab");
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   };
 
   return (
     <View>
       <AppHeader title={"유저 레시피"} />
-      <ScrollView style={[padding.horizontal(safe.horizontal)]}>
+      <ScrollView style={[padding.horizontal(safe.horizontal), column]}>
         <View>
-          <Text style={[text.h1]}>레시피 업로드</Text>
+          <Text style={[text.h3]}>레시피 업로드</Text>
           <TextInput
             style={[
-              { height: 70, fontSize: 28, margin: 10, padding: 10, borderRadius: 20 },
+              {
+                height: 70,
+                fontSize: 28,
+                margin: 10,
+                padding: 10,
+                borderRadius: 20,
+              },
               border.gray100,
             ]}
             value={title}
@@ -70,25 +81,35 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
         </View>
         <View>
           <TextInput
-            style={[{height: 40, fontSize: 18, margin: 10, padding: 5, borderRadius: 10}, border.gray100]}
+            style={[
+              {
+                height: 40,
+                fontSize: 18,
+                margin: 10,
+                padding: 5,
+                borderRadius: 10,
+              },
+              border.gray100,
+            ]}
             value={subTitle}
             onChangeText={(taxt: string) => setSubTitle(taxt)}
             placeholder="설명을 입력해주세요."
           />
         </View>
-        <View >
-          <Text style={[text.h2]}>요리 부재료 및 도구</Text>
-          <Text style={[{marginTop: 20}, text.sub1]}>조리 도구 추가</Text>
+        <View>
+          <Text style={[text.h3]}>요리 부재료 및 도구</Text>
+          <Text style={[{ marginTop: 20 }, text.sub1]}>조리 도구 추가</Text>
           <TextInput
             style={[border.gray100]}
             placeholder="2가지 이상의 도구는 띄어쓰기로 구분해 주세요"
             value={cookerInput}
             onChangeText={(cooker) => addCookerTag(cooker)}
           />
-          <View style={{ flexDirection: "row", flexWrap: 'wrap', height: 40}}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {cookers.map((cooker, index) => {
               return (
                 <Tag
+                  key={index}
                   onPress={() => {
                     const newCookers = [...cookers];
                     newCookers.splice(index, 1);
@@ -97,7 +118,7 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
                   value={cooker}
                   size={20}
                   color={colors.primary}
-                  style={{marginHorizontal: 5 }}
+                  style={{ marginHorizontal: 5 }}
                   textColor={colors.primaryDark}
                   canDeleted
                 />
@@ -111,35 +132,40 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
             value={ingradientInput}
             onChangeText={(ingradient) => addIngradiantTag(ingradient)}
           />
-          <View style={{ flexDirection: "row", flexWrap: 'wrap', width: 700, height: 40 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+            }}
+          >
             {ingradients.map((ingradient, index) => {
               return (
                 <Tag
-                onPress={() => {
-                  const newIngredient = [...ingradients];
-                  newIngredient.splice(index, 1);
-                  setIngradiants(newIngredient);
-                }}
+                  key={index}
+                  onPress={() => {
+                    const newIngredient = [...ingradients];
+                    newIngredient.splice(index, 1);
+                    setIngradiants(newIngredient);
+                  }}
                   value={ingradient}
                   size={20}
                   color={colors.primary}
                   textColor={colors.primaryDark}
-                  style={{marginHorizontal: 5 }}
+                  style={{ marginHorizontal: 5 }}
                   canDeleted
                 />
               );
             })}
           </View>
         </View>
-        <View style={{ flexDirection: "column" }}>
-          {/*DOTO: label이 화면에 표시되지 않는 오류 수정 */}
+        <View>
           <View
             style={{ flexDirection: "row", justifyContent: "space-evenly" }}
           >
             <View style={{ flexDirection: "column", marginRight: 50 }}>
               <Text style={[text.h3]}>난이도</Text>
               <Picker
-                style={{ width: 150 }}
+                style={{ width: 100, height: 40 }}
                 selectedValue={level}
                 onValueChange={(value, index) => {
                   setLevel(value);
@@ -157,62 +183,43 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
             </View>
             <View style={{ flexDirection: "column" }}>
               <Text style={[text.h3]}>소요 시간</Text>
-              <Picker
-                style={{ flex: 1, fontSize: 12, width: 150 }}
-                selectedValue={cookTime}
-                onValueChange={(cookTime, index) => {
-                  setCookTime(cookTime);
-                }}
-              >
-                <Picker.Item
-                  label="5분이내"
-                  value="1"
-                  style={{ fontSize: 12 }}
-                />
-                <Picker.Item
-                  label="10분이내"
-                  value="2"
-                  style={{ fontSize: 12 }}
-                />
-                <Picker.Item
-                  label="30분이내"
-                  value="3"
-                  style={{ fontSize: 12 }}
-                />
-                <Picker.Item
-                  label="70분이내"
-                  value="4"
-                  style={{ fontSize: 12 }}
-                />
-                <Picker.Item
-                  label="1시간이상"
-                  value="5"
-                  style={{ fontSize: 12 }}
-                />
-              </Picker>
+              <TextInput
+                style={[
+                  {
+                    height: 40,
+                    fontSize: 18,
+                    margin: 10,
+                    padding: 5,
+                    borderRadius: 10,
+                  },
+                  border.gray100,
+                ]}
+                keyboardType="numeric" // 키보드 타입을 숫자로 설정
+                value={cookTime}
+                onChangeText={setCookTime} // 텍스트가 변경될 때마다 cookTime 업데이트
+                placeholder=""
+              />
             </View>
           </View>
         </View>
-        <View style={{alignItems: 'center'}}>
-        <RequestButton 
-          style={[
-            {
-              borderRadius: 10,
-              backgroundColor: colors.primary,
-              padding: 10,
-              marginVertical: 10,
-              justifyContent: "center",
-              flexDirection: "row",
-              alignItems: "center",
-              width: 120,
-              height: 50,
-            },
-          ]}
-          text={'저장하기'}
-          size={20}
-          onPress={addRecipe}/> 
+        <View style={{ alignItems: "center" }}>
+          <TouchableOpacity
+            style={[
+              {
+                borderRadius: 10,
+                backgroundColor: colors.primary,
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+                height: 50,
+                width: 120,
+              },
+            ]}
+            onPress={addRecipe}
+          >
+            <Text style={[text.body2]}>저장하기</Text>
+          </TouchableOpacity>
         </View>
-        
       </ScrollView>
     </View>
   );
