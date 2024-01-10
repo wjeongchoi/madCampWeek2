@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { getRequest } from "../axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { VerticalRecipePreview } from "../components/VerticalRecipePreview";
+import { useFocusEffect } from "@react-navigation/native";
 
 export const RecommendMain: React.FC<HomeTabScreenProps<"Recommend">> = ({
   navigation,
@@ -22,6 +23,23 @@ export const RecommendMain: React.FC<HomeTabScreenProps<"Recommend">> = ({
   const [myIngredients, setMyIngredients] = useState([]);
   const [myCookers, setMyCookers] = useState([]);
   const [recommendedRecipes, setRecommendedRecipes] = useState([]);
+
+  const refreshData = async () => {
+    const storedUserID = await AsyncStorage.getItem("userID");
+    if (storedUserID !== null) {
+      setUserID(storedUserID);
+
+      getRequest(`users/${storedUserID}/ingredients`, setMyIngredients);
+      getRequest(`users/${storedUserID}/cookers`, setMyCookers);
+      const skip = Math.floor(Math.random() * 10000); // 예제 코드에서 사용된 랜덤 스킵 값
+      getRequest(`recipes?skip=${skip}&limit=5`, setRecommendedRecipes);
+    }
+  };
+  useFocusEffect(
+    useCallback(() => {
+      refreshData();
+    }, [])
+  );
 
   useEffect(() => {
     const fetchUserID = async () => {
