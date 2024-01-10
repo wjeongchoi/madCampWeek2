@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, Image, ViewProps } from "react-native";
-import { colors } from "../styles";
+import { align, colors, justify, text } from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Recipe } from "../types";
 import { EllipticalText } from "./EllipticalText";
@@ -18,6 +18,8 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
   ...props
 }) => {
   const [isLike, setIsLike] = useState(false);
+  const levelText = ["누구나", "초급", "중급", "고급", "상급"];
+
   const likeToggle = () => {
     setIsLike(!isLike);
     // 좋아요 했는지 안했는지 받기
@@ -28,10 +30,10 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
       style={[
         {
           flexDirection: "column",
-          margin: 10,
           backgroundColor: colors.gray50,
           borderRadius: 20,
           padding: 5,
+          marginVertical: 8,
         },
         style,
       ]}
@@ -40,13 +42,18 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
         style={{
           alignItems: "center",
           flexDirection: "row",
-          marginVertical: 10,
+          marginVertical: 5,
           justifyContent: "center",
         }}
       >
         <Image
           source={imgPath ? { uri: imgPath } : defaultImage}
-          style={{ width: 50, height: 50 ,marginHorizontal: 10, borderRadius: 20}} 
+          style={{
+            width: 50,
+            height: 50,
+            marginHorizontal: 10,
+            borderRadius: 20,
+          }}
         />
 
         <View
@@ -61,25 +68,23 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
+              alignItems:"center",
+              paddingBottom: 4
             }}
           >
-            <EllipticalText
-              fontSize={18}
-              text={recipe.title}
-              numberOfLines={1}
-            />
-            <View pointerEvents="none">
-              {/*             여기만 터치가 안되게 하고 싶은데 적용이 안됨 */}
+            <Text style={[text.sub1]} numberOfLines={1} ellipsizeMode="tail">
+              {recipe.title}
+            </Text>
 
-              <Ionicons
-                name="heart"
-                color={isLike ? colors.like : colors.gray100}
-                size={30}
-                onPress={() => {
-                  likeToggle;
-                }}
-              />
-            </View>
+            <Ionicons
+              name="heart"
+              color={isLike ? colors.like : colors.gray100}
+              size={30}
+              onPress={() => {
+                likeToggle;
+              }}
+              style={{paddingBottom: 4}}
+            />
           </View>
 
           <View
@@ -92,13 +97,15 @@ export const ExpandedPreview: React.FC<ExpandedPreviewProps> = ({
             <Text style={{ fontSize: 12 }}>
               조리시간: {String(recipe.cookTime)}분 이내
             </Text>
-            <Text style={{ fontSize: 12 }}>난이도: {String(recipe.level)}</Text>
+            <Text style={{ fontSize: 12 }}>
+              난이도: {levelText[recipe.level]}
+            </Text>
           </View>
         </View>
       </View>
       <View>
         <Text
-          style={{ marginHorizontal: 10 }}
+          style={{ marginHorizontal: 10, paddingBottom: 10 }}
           numberOfLines={2}
           ellipsizeMode="tail"
         >

@@ -65,9 +65,8 @@ export const RecommendMain: React.FC<HomeTabScreenProps<"Recommend">> = ({
       <View style={[padding.horizontal(safe.horizontal)]}>
         <View style={[padding.vertical(8)]}>
           <Text style={[text.h3]}>오늘의 추천메뉴 </Text>
-          <ScrollView style={{ flexDirection: "row" }} horizontal>
+          <ScrollView style={{ flexDirection: "row"}} horizontal>
             {recommendedRecipes.map((recipe, index) => (
-              // Assuming you have a component to display each recipe
               <TouchableOpacity
                 onPress={() => {
                   recipe.manId
