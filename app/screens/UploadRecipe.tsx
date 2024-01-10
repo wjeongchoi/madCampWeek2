@@ -5,7 +5,7 @@ import { Picker } from "@react-native-picker/picker";
 import { border, colors, padding, safe, text } from "../styles";
 import { RootStackScreenProps } from "../navigation/types";
 import { postRequest } from "../axios";
-import { AppHeader, Tag, RequestButton} from "../components";
+import { AppHeader, Tag, RequestButton } from "../components";
 
 export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
   navigation,
@@ -22,8 +22,7 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
   const addCookerTag = (tag: string) => {
     setCookerInput(tag);
     if (tag.includes(" ")) {
-      if(tag == '')
-        return
+      if (tag == "") return;
       setCookers([...cookers, tag]);
       setCookerInput("");
     }
@@ -32,8 +31,7 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
   const addIngradiantTag = (tag: string) => {
     setIngradientInput(tag);
     if (tag.includes(" ")) {
-      if(tag == '')
-        return
+      if (tag == "") return;
       setIngradiants([...ingradients, tag]);
       setIngradientInput("");
     }
@@ -46,7 +44,8 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
       level: level,
       cookTime: cookTime,
     };
-    postRequest("recipes/", sendData, (responseData) => {
+    postRequest("recipes", sendDate, (responseData) => {
+      console.log(responseData, "ddd");
       navigation.navigate("HomeTab");
     }, (error) => {
       console.error(error);
@@ -54,7 +53,7 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <AppHeader title={"유저 레시피"} />
       <ScrollView style={[padding.horizontal(safe.horizontal)]}>
         <View>
@@ -181,7 +180,7 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
                   style={{ fontSize: 12 }}
                 />
                 <Picker.Item
-                  label="60분이내"
+                  label="70분이내"
                   value="4"
                   style={{ fontSize: 12 }}
                 />

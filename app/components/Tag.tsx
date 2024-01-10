@@ -33,7 +33,7 @@ export const Tag: React.FC<TagProps> = ({
         style={{
           flexDirection: "row",
           borderRadius: size * 0.8,
-          backgroundColor: color,
+          backgroundColor: colors.primary,
           paddingHorizontal: 10, // Increased horizontal padding
           justifyContent: 'space-evenly',
           alignItems: "center",
