@@ -113,7 +113,7 @@ def get_recipe(recipe_id: str, db: Session = Depends(get_db)):
 def get_recipe_details(recipe_id: str, db: Session = Depends(get_db)):
     # Fetching the details of the recipe
     details = db.query(models.DetailRecipe).filter(models.DetailRecipe.recipeID == recipe_id).all()
-
+    
     if not details:
         raise HTTPException(status_code=404, detail="Recipe details not found")
 
@@ -139,10 +139,10 @@ def get_recipe_ingredients(recipe_id: str, skip: int = 0, limit: int = 100, db: 
     return response_data
 
 
-@recipe.get("/search", response_model=List[schemas.Recipe])
-def search_recipes(name: str = Query(None, min_length=1), db: Session = Depends(get_db)):
+@recipe.get("/search/{name}", response_model=List[schemas.Recipe])
+def search_recipes(name: str, db: Session = Depends(get_db)):
     # Searching for recipes by name
-    if name:
+    if name and len(name) > 1:
         recipes = db.query(models.Recipe).filter(models.Recipe.title.contains(name)).limit(100).all()
         return recipes
     else:
