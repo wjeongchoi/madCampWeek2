@@ -39,7 +39,7 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({
     console.log('1', searchText);
     console.log('2', encodedRecipeName);
     getRequest(
-      `recipes/search?name=${searchText}`,
+      `recipes/search/${searchText}`,
       (data) => {
         setRecipes([...data]);
       },
