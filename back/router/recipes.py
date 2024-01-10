@@ -3,7 +3,7 @@ import models.models as models, schemas.schemas as schemas
 from sqlalchemy.orm import Session
 from database import get_db
 from typing import List, Optional
-
+from sqlalchemy import or_, and_
 
 recipe = APIRouter()
 
@@ -104,6 +104,7 @@ def get_recipes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 # Get recipe by ID
 @recipe.get("/{recipe_id}", response_model=schemas.Recipe)
 def get_recipe(recipe_id: str, db: Session = Depends(get_db)):
+
     db_recipe = db.query(models.Recipe).filter(models.Recipe.recipeID == recipe_id).first()
     if db_recipe is None:
         raise HTTPException(status_code=404, detail="Recipe not found")
@@ -113,7 +114,7 @@ def get_recipe(recipe_id: str, db: Session = Depends(get_db)):
 def get_recipe_details(recipe_id: str, db: Session = Depends(get_db)):
     # Fetching the details of the recipe
     details = db.query(models.DetailRecipe).filter(models.DetailRecipe.recipeID == recipe_id).all()
-    
+
     if not details:
         raise HTTPException(status_code=404, detail="Recipe details not found")
 
@@ -148,27 +149,35 @@ def search_recipes(name: str, db: Session = Depends(get_db)):
     else:
         raise HTTPException(status_code=400, detail="Search query cannot be empty")
 
-@recipe.get("/recommend", response_model=List[schemas.Recipe])
-def recommend(
-    ingredient_ids: Optional[List[str]] = Query(None),
-    cooker_ids: Optional[List[str]] = Query(None),
+@recipe.get("/recommend/recommend", response_model=List[schemas.Recipe])
+def recommends(
+    ingredient_ids: Optional[List[str]] = None,
+    cooker_ids: Optional[List[str]] = None, 
+    skip: int = 0, limit: int = 100,
     db: Session = Depends(get_db)
 ):
     # Building the query
     query = db.query(models.Recipe)
-
-    # Filter by ingredients if provided
     if ingredient_ids:
-        query = query.join(models.t_recipeWithIngredient, models.Recipe.recipeID == models.t_recipeWithIngredient.c.recipeID)
-        query = query.filter(models.t_recipeWithIngredient.c.ingredientID.in_(ingredient_ids))
+        conditions = [models.t_recipeWithIngredient.c.ingredientID == ingredient_id for ingredient_id in ingredient_ids]
+        combined_condition = and_(*conditions)
+        query = query.filter(combined_condition)
+        # query = query.join(models.t_recipeWithIngredient, models.Recipe.recipeID == models.t_recipeWithIngredient.c.recipeID)
+        # query = query.filter(models.t_recipeWithIngredient.c.ingredientID.in_(ingredient_ids))
 
     # Filter by cookers if provided
     if cooker_ids:
-        query = query.join(models.t_recipeWithCooker, models.Recipe.recipeID == models.t_recipeWithCooker.c.recipeID)
-        query = query.filter(models.t_recipeWithCooker.c.cookerID.in_(cooker_ids))
+        
+        conditions = [models.t_recipeWithCooker.c.cookerID == cooker_id for cooker_id in cooker_ids]
+        combined_condition = or_(*conditions)
+        query = query.filter(combined_condition)
+
+
+        # query = query.join(models.t_recipeWithCooker, models.Recipe.recipeID == models.t_recipeWithCooker.c.recipeID)
+        # query = query.filter(models.t_recipeWithCooker.c.cookerID.in_(cooker_ids))
 
     # Get the distinct recipes after applying filters
-    recipes = query.distinct().all()
+    recipes = query.distinct().offset(skip).limit(limit).all()
 
     return recipes
 
