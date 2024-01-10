@@ -75,7 +75,7 @@ export const MyKitchenState: React.FC<
     });
   };
 
-  const addIngradiantTag = (tag: string) => {
+  const addIngredientTag = (tag: string) => {
     setIngredientInput(tag);
     if (tag.includes(" ")) {
       setIngredients([...ingredients, tag]);
@@ -117,7 +117,7 @@ export const MyKitchenState: React.FC<
             ]}
             placeholder="2가지 이상의 재료는 띄어쓰기로 구분해 주세요"
             value={ingredientInput}
-            onChangeText={(text) => addIngradiantTag(text)}
+            onChangeText={(text) => addIngredientTag(text)}
           />
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {ingredients.map((ingredient: string, index : number) => {
