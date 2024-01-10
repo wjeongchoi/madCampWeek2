@@ -61,7 +61,7 @@ export const Tag: React.FC<TagProps> = ({
           <Ionicons
             name="close-circle-sharp"
             size={size}
-            style={{ color: isSelected ? color : textColor }}
+            style={{ color: colors.primaryDark}}
             onPress={() => {
               onDeletePress;
             }}
