@@ -66,13 +66,11 @@ export const OwnRecipe = ({ route }) => {
                 <Tag
                   size={20}
                   value={ingredient.ingredientName}
-                  isSelected={selectedIngredients[index]}
                   color={colors.primary}
                   textColor={colors.primaryDark}
                   style={{ width: 100, margin: 10 }}
                   onPress={() => {
                     const newSelected = selectedIngredients;
-                    newSelected[index] = !newSelected[index];
                     setSelectedIngredients([...newSelected]);
                   }}
                 />
@@ -87,13 +85,11 @@ export const OwnRecipe = ({ route }) => {
                 <Tag
                   size={20}
                   value={cooker.cookerName}
-                  isSelected={selectedCookers[index]}
                   color={colors.primary}
                   textColor={colors.primaryDark}
                   style={{ width: 100, margin: 10 }}
                   onPress={() => {
                     const newSelected = selectedCookers;
-                    newSelected[index] = !newSelected[index];
                     setSelectedCookers([...newSelected]);
                   }}
                 />

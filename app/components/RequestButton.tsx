@@ -20,7 +20,9 @@ export const RequestButton: React.FC<CustomButtonProps> = ({ onPress, text, size
       justifyContent: 'center',
       flexDirection: 'row', 
       alignItems: 'center'
-      }, style]} onPress={onPress} {...props}>
+      }, style]} 
+      onPress={onPress} 
+      {...props}>
         { iconName && <Ionicons 
                       name={iconName} 
                       size={size} 
