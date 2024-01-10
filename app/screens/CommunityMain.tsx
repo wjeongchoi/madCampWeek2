@@ -68,9 +68,6 @@ export const CommunityMain: React.FC<HomeTabScreenProps<"Community">> = ({
                 >
                   <ExpandedPreview
                     recipe={recipe}
-                    imgPath={
-                      "https://podicmaster.cdn3.cafe24.com/artworks/0094.png"
-                    }
                   />
                 </TouchableOpacity>
               );

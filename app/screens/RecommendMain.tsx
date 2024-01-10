@@ -41,7 +41,7 @@ export const RecommendMain: React.FC<HomeTabScreenProps<"Recommend">> = ({
   useEffect(() => {
     const fetchRecipeCount = async () => {
       try {
-        const skip = Math.floor(Math.random() * 160000);
+        const skip = Math.floor(Math.random() * 50000);
         getRequest(`recipes?skip=${skip}&limit=5`, setRecommendedRecipes);
       } catch (error) {
         console.error("Error fetching recipe count:", error);
