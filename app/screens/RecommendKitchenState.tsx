@@ -61,15 +61,10 @@ export const RecommendedKitchenState: React.FC<
                     console.log("state changed");
                   }}
                   value={ingredient}
-                  onDeletePress={() => {
-                    console.log("delete");
-                  }}
                   size={20}
-                  isSelected={false}
                   color={colors.primary}
                   style={{ width: 100 }}
                   textColor={""}
-                  canDeleted={true}
                 />
               );
             })}
@@ -96,15 +91,10 @@ export const RecommendedKitchenState: React.FC<
                     console.log("state changed");
                   }}
                   value={cooker}
-                  onDeletePress={() => {
-                    console.log("delete");
-                  }}
                   size={20}
-                  isSelected={false}
                   color={colors.primary}
                   style={{ width: 100 }}
                   textColor={""}
-                  canDeleted={true}
                 />
               );
             })}

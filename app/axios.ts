@@ -27,20 +27,17 @@ export const postRequest = async (
   handleError?: (error: any) => void
 ) => {
 
-  try {
-    console.log('request', `${API_URL}/${url}`);
-    const response = await axios.post(
+    await axios.post(
       `${API_URL}/${url}`,
       data,
       { withCredentials: true }
-    );
-    handleSuccess(response);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    if (handleError) {
-      handleError(error);
-    }
-  }
+    ).then((response) => {handleSuccess(response); console.log('su')})
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      if (handleError) {
+        handleError(error);
+      }
+    })
 };
 
 export const putRequest = async (
