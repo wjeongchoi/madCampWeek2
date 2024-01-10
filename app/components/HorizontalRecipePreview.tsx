@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Image, ViewProps } from "react-native";
-import { colors, justify, row, text } from "../styles";
+import { colors, justify, padding, row, text } from "../styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Recipe } from "../types";
 import placeholderImage from "../assets/logo2.png"; // Import your placeholder image
@@ -68,7 +68,7 @@ export const HorizontalRecipePreview: React.FC<HorizontalRecipeProps> = ({
           }}
         >
           <Text
-            style={[text.sub2]}
+            style={[text.sub2, padding.bottom(4)]}
             numberOfLines={1}
             ellipsizeMode="tail"
           >
