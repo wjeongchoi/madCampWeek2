@@ -141,3 +141,6 @@ Download HERE!
 -  내가 좋아요한 레시피/내 재료/내 조리도구를 한 눈에 볼 수 있는 화면입니다.
    - 
 
+## F. 색상
+
+primary <div style="background-color: #FFCA0F"><img width="50px" height="50px" /></div>
