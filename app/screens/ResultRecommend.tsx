@@ -1,60 +1,60 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
-  Button,
-  SafeAreaView,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
   Image,
-  TextInput,
+  Text,
+  Dimensions,
 } from "react-native";
 import { RootStackScreenProps } from "../navigation/types";
-import { align, center, colors, padding, row, safe, text } from "../styles";
-import { Ionicons } from "@expo/vector-icons";
+import { center, colors, padding, row, safe, text } from "../styles";
 import { getRequest } from "../axios";
 import { AppHeader, HorizontalRecipePreview, SearchBar } from "../components";
 import { Recipe } from "../types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const ResultRecommend: React.FC<
-  RootStackScreenProps<"MyKitchenState">
-> = ({ navigation }) => {
+export const ResultRecommend: React.FC<RootStackScreenProps<"MyKitchenState">> = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [userIngredients, setUserIngredients] = useState([]); // State to store user's ingredients
 
   useEffect(() => {
-    // Fetch initial set of recipes or recommendations
-    fetchRecipes();
+    fetchUserIngredients();
   }, []);
 
-  const fetchRecipes = () => {
-    getRequest(
-      "recipes/",
-      (response) => {
-        setRecipes([...response]);
-      },
-      (error) => {
-        console.error("Error fetching recipes data:", error);
+  useEffect(() => {
+    if (userIngredients.length > 0) {
+      fetchRecipes();
+    }
+  }, [userIngredients]);
+
+  const fetchUserIngredients = async () => {
+    try {
+      const userID = await AsyncStorage.getItem("userID");
+      if (userID !== null) {
+        getRequest(`users/${userID}/ingredients`, setUserIngredients);
       }
-    );
+    } catch (error) {
+      console.error("Error fetching user's ingredients:", error);
+    }
+  };
+
+  const fetchRecipes = () => {
+    const ingredientIds = userIngredients.map(ingredient => ingredient.ingredientID);
+    getRequest(`recommend?ingredient_ids=${ingredientIds.join(',')}`, setRecipes);
   };
 
   const handleSearch = () => {
     const encodedRecipeName = encodeURIComponent(searchText);
-    console.log("1", searchText);
-    console.log("2", encodedRecipeName);
-    getRequest(
-      `recipes/search/${searchText}`,
-      (data) => {
-        setRecipes([...data]);
-      },
-      (error) => {
-        console.error("Search error:", error);
-      }
-    );
+    getRequest(`recipes/search/${encodedRecipeName}`, (data) => {
+      setRecipes([...data]);
+    }, (error) => {
+      console.error("Search error:", error);
+    });
     setSearchText("");
   };
+
   return (
     <View style={{ flex: 1 }}>
       <AppHeader title={"유저 레시피"} />
