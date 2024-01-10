@@ -143,7 +143,7 @@ def get_recipe_ingredients(recipe_id: str, skip: int = 0, limit: int = 100, db: 
 def search_recipes(name: str = Query(None, min_length=1), db: Session = Depends(get_db)):
     # Searching for recipes by name
     if name:
-        recipes = db.query(models.Recipe).filter(models.Recipe.title.contains(name)).all()
+        recipes = db.query(models.Recipe).filter(models.Recipe.title.contains(name)).limit(100).all()
         return recipes
     else:
         raise HTTPException(status_code=400, detail="Search query cannot be empty")
