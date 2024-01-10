@@ -1,10 +1,15 @@
-import React from 'react';
-import { TouchableOpacity, View, TouchableOpacityProps } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../styles';
+import React from "react";
+import {
+  TouchableOpacity,
+  View,
+  TouchableOpacityProps,
+  Text,
+} from "react-native";
+import { TextInput } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
+import { colors, margin, padding, round, text } from "../styles";
 
-interface SearchBarProps extends TouchableOpacityProps{
+interface SearchBarProps extends TouchableOpacityProps {
   onPress: () => void;
   onChangeText: () => void;
   value: string;
@@ -12,26 +17,43 @@ interface SearchBarProps extends TouchableOpacityProps{
   placeholder?: string;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ onPress, onChangeText, value, size, placeholder, style, ...props }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({
+  onPress,
+  onChangeText,
+  value,
+  size,
+  placeholder,
+  style,
+  ...props
+}) => {
   return (
-    <View style={[{backgroundColor: colors.gray200,
-            borderRadius: size,
-            padding: (size * 0.5),
-            alignItems: 'center',
-            
-            flexDirection: "row"}, style]}>
-        <TouchableOpacity onPress={onPress}>
-            <Ionicons name="search" color={colors.gray500} size={size} />
-        </TouchableOpacity>
-        <TextInput
-            keyboardType="web-search"
-            onChangeText={onChangeText}
-            placeholder={placeholder ? "검색" : placeholder}
-            value={value}
-            style={{fontSize: (size * 0.7), marginLeft: (size * 0.3)}}/>  
+    <View>
+      <TouchableOpacity
+        onPress={() => {
+          onPress;
+        }}
+      >
+        <View
+          style={[
+            round.md,
+            {
+              backgroundColor: colors.gray200,
+
+              padding: 10,
+              alignItems: "center",
+
+              flexDirection: "row",
+            },
+          ]}
+        >
+          <Ionicons name="search" color={colors.gray500} size={20} />
+          <Text style={[margin.left(6), text.btn2, { color: colors.gray500 }]}>
+            레시피를 검색해보세요
+          </Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
-
 
 export default SearchBar;
