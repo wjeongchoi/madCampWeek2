@@ -42,7 +42,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             onChangeText={onChangeText}
             value={value}
             onSubmitEditing={onPress}
-            placeholder={placeholder || '레시피를 검색해보세요'}
+            placeholder={placeholder}
           />
         </View>
     </View>
