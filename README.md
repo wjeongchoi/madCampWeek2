@@ -171,7 +171,6 @@ Download HERE!
 | 이름 | 색상 블럭 | 
 | --- | --- |
 | Primary |  ![primaryLight](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/8fff589d-ebfe-42f4-b71a-4684c3686594)![primary](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/82f9725c-a3c1-49a5-a32a-a4fe3095f4d6)![primaryDark](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/f22c76c5-461a-4435-8013-2732b358ed90) |
-|  Red | ![warning](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/4968a104-82d5-410f-bd49-e405f21c1192)![red](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/0fa127b0-06f6-4c4b-baef-7150d45c2508)![like](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/05037645-1307-4c13-ae14-87e1a50483d2) |
 |   Gray | ![gray50](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/68774f90-ef79-491f-84f5-7a2fbc68cec6)![gray100](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/b5359996-053a-4427-9c17-f45a243e1588)![gray200](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/7b289465-2092-44bf-99fe-a37d47aaa7bc)![gray300](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/dd51c033-1239-4189-82ca-f0f56595f688)![gray400](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/09657934-a4b5-4c31-9f5d-feb787b4ebea)![gray500](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/612386de-d395-4ca6-af2f-20bd9a80d7c5)![gray600](https://github.com/wjeongchoi/madCampWeek2/assets/64767436/991f6918-32dd-425f-a4da-295bd6022738) |
 
 
