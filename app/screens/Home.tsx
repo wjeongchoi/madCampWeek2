@@ -54,7 +54,7 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
         style={[
           padding.horizontal(safe.horizontal),
           column,
-          padding.top(24),
+          padding.top(16),
           gap(8),
         ]}
       >
