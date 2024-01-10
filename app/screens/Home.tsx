@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getRequest } from "../axios";
-import { AppHeader, Tag } from "../components";
-import { colors, column, gap, padding, row, safe, text } from "../styles";
+import { AppHeader, SearchBar, Tag } from "../components";
+import {
+  colors,
+  column,
+  gap,
+  margin,
+  padding,
+  round,
+  row,
+  safe,
+  text,
+} from "../styles";
 import { VerticalRecipePreview } from "../components/VerticalRecipePreview";
+import { Ionicons } from "@expo/vector-icons";
+import { HomeTabScreenProps } from "../navigation/types";
 
 export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
   const [userID, setUserID] = useState("");
@@ -38,7 +50,37 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
   return (
     <View>
       <AppHeader title={"맞춤혼밥"} />
-      <View style={[padding.horizontal(safe.horizontal), column]}>
+      <View
+        style={[
+          padding.horizontal(safe.horizontal),
+          column,
+          padding.top(16),
+          gap(8),
+        ]}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Search");
+          }}
+        >
+          <View
+            style={[
+              round.md,
+              {
+                backgroundColor: colors.gray200,
+
+                padding: 10,
+                alignItems: "center",
+
+                flexDirection: "row",
+              },
+            ]}
+          >
+            <Ionicons name="search" color={colors.gray500} size={20} />
+            <Text style={[margin.left(6), text.btn2, {color:colors.gray500}]}>레시피를 검색해보세요</Text>
+          </View>
+        </TouchableOpacity>
+
         <View style={[padding.vertical(8)]}>
           <Text style={[text.h3]}>내 재료</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -86,11 +128,23 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
           <ScrollView style={[row]} horizontal={true}>
             {likeRecipes.length > 0 ? (
               likeRecipes.map((recipe, index) => (
-                <VerticalRecipePreview
-                  key={index}
-                  recipe={recipe}
-                  imgSrc={recipe.imgSrc}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    recipe.manId
+                      ? navigation.navigate("ManRecipe", {
+                          recipeId: recipe.recipeID,
+                        } as { recipeId: string })
+                      : navigation.navigate("OwnRecipe", {
+                          recipeId: recipe.recipeID,
+                        } as { recipeId: string });
+                  }}
+                >
+                  <VerticalRecipePreview
+                    key={index}
+                    recipe={recipe}
+                    imgSrc={recipe.imgSrc}
+                  />
+                </TouchableOpacity>
               ))
             ) : (
               <Text style={[text.btn1, { color: colors.gray400 }]}>

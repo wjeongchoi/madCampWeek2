@@ -21,6 +21,7 @@ import {
   safe,
   colors,
   center,
+  margin,
 } from "../styles";
 import { HomeTabScreenProps } from "../navigation/types";
 import { UserData } from "../types/user"; // Assuming Recipe is a type defined in your types
@@ -115,7 +116,7 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
     <View style={{ flex: 1, gap: 12 }}>
       <AppHeader title={"마이페이지"} />
       <ScrollView style={[padding.horizontal(safe.horizontal), gap(16)]}>
-        <Text style={[text.h3, justify.start]}>계정</Text>
+        <Text style={[text.h3, justify.start, margin.bottom(8)]}>계정</Text>
         {userData && (
           <>
             <View style={[row, gap(12)]}>
@@ -184,11 +185,23 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
           <ScrollView style={[row]} horizontal={true}>
             {likeRecipes.length > 0 ? (
               likeRecipes.map((recipe, index) => (
-                <VerticalRecipePreview
-                  key={index}
-                  recipe={recipe}
-                  imgSrc={recipe.imgSrc}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    recipe.manId
+                      ? navigation.navigate("ManRecipe", {
+                          recipeId: recipe.recipeID,
+                        } as { recipeId: string })
+                      : navigation.navigate("OwnRecipe", {
+                          recipeId: recipe.recipeID,
+                        } as { recipeId: string });
+                  }}
+                >
+                  <VerticalRecipePreview
+                    key={index}
+                    recipe={recipe}
+                    imgSrc={recipe.imgSrc}
+                  />
+                </TouchableOpacity>
               ))
             ) : (
               <Text style={[text.btn1, { color: colors.gray400 }]}>

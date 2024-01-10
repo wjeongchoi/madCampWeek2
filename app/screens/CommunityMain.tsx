@@ -8,7 +8,7 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
-import { padding, safe, text } from "../styles";
+import { margin, padding, safe, text } from "../styles";
 import { HomeTabScreenProps } from "../navigation/types";
 import { getRequest } from "../axios";
 import { Recipe } from "../types/recipe";
@@ -24,7 +24,11 @@ export const CommunityMain: React.FC<HomeTabScreenProps<"Community">> = ({
     getRequest(
       "recipes/",
       (response) => {
-        setRecipes([...response]);
+        // 날짜에 따라 레시피를 내림차순으로 정렬
+        const sortedRecipes = [...response].sort((a, b) =>
+          new Date(b.writedTime) - new Date(a.writedTime)
+        );
+        setRecipes(sortedRecipes);
       },
       (error) => {
         console.error("Error fetching recipes data:", error);
@@ -43,13 +47,12 @@ export const CommunityMain: React.FC<HomeTabScreenProps<"Community">> = ({
           size={20}
           text="내 레시피 등록하기"
           iconName="restaurant-sharp"
+          style={[margin.top(16)]}
         />
 
-        <SafeAreaView style={{ marginTop: 10 }}>
           <ScrollView
             style={{
               display: "flex",
-              width: Dimensions.get("window").width * 0.9,
             }}
           >
             {recipes.map((recipe: Recipe, index) => {
@@ -73,7 +76,6 @@ export const CommunityMain: React.FC<HomeTabScreenProps<"Community">> = ({
               );
             })}
           </ScrollView>
-        </SafeAreaView>
       </View>
     </View>
   );
