@@ -59,112 +59,86 @@ export const ManRecipe = ({ route }) => {
       });
     });
   }, []);
+  const levelText = ["누구나", "초급", "중급", "고급", "상급"];
+
 
   return (
     <View>
       <AppHeader title={"만개의 레시피"} />
-
-      <View style={[padding.horizontal(safe.horizontal)]}>
-        <View style={{ margin: 10 }}>
-          <EllipticalText numberOfLines={1} fontSize={24} text={title} />
-          <EllipticalText numberOfLines={2} fontSize={16} text={subTitle} />
+      <View style={[padding.horizontal(safe.horizontal), padding.vertical(12)]}>
+        <Text style={[text.h2]} numberOfLines={1} ellipsizeMode="tail">
+          {title}
+        </Text>
+        <Text numberOfLines={2} ellipsizeMode="tail" style={[text.body1]}>
+          {subTitle}
+        </Text>
+        <View style={[padding.vertical(8)]}>
           <Text style={[text.h3]}>필요한 재료</Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {recipeIngredients.map((ingredient: Ingredient, index: number) => {
               return (
                 <Tag
-                  size={20}
+                  key={index}
                   value={ingredient.ingredientName}
-                  isSelected={selectedIngredients[index]}
+                  size={14}
                   color={colors.primary}
-                  textColor={colors.primaryDark}
-                  style={{ width: 100, margin: 10 }}
-                  onPress={() => {
-                    const newSelected = selectedIngredients;
-                    newSelected[index] = !newSelected[index];
-                    setSelectedIngredients([...newSelected]);
-                  }}
+                  textColor={colors.black}
+                  style={{ margin: 5 }}
                 />
               );
             })}
-          </View>
-          {/* 내 냉장고에 재료가 있는지 여부에 따라 bool을 리턴하는 api 필요*/}
-          <Text style={[text.h3]}>필요한 조리도구</Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {recipeCookers.map((cooker: Cooker, index: number) => {
-              return (
-                <Tag
-                  size={20}
-                  value={cooker.cookerName}
-                  isSelected={selectedCookers[index]}
-                  color={colors.primary}
-                  textColor={colors.primaryDark}
-                  style={{ width: 100, margin: 10 }}
-                  onPress={() => {
-                    const newSelected = selectedCookers;
-                    newSelected[index] = !newSelected[index];
-                    setSelectedCookers([...newSelected]);
-                  }}
-                />
-              );
-            })}
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-              marginTop: 20,
-            }}
-          >
-            <View style={{ flexDirection: "column" }}>
-              <Text
-                style={{ fontSize: 20, textAlign: "center", marginBottom: 10 }}
-              >
-                조리시간
-              </Text>
-              <Tag
-                textColor={colors.black}
-                color={colors.primary}
-                size={20}
-                value={cookTime}
-                style={{ width: 100 }}
-              />
-            </View>
-            <View style={{ flexDirection: "column" }}>
-              <Text
-                style={{ fontSize: 20, textAlign: "center", marginBottom: 10 }}
-              >
-                난이도
-              </Text>
-              <Tag
-                textColor={colors.black}
-                color={colors.primary}
-                size={20}
-                value={String(level)}
-                style={{ width: 100 }}
-              />
-            </View>
           </View>
         </View>
-        <View style={[center]}>
-          <TouchableOpacity
-            onPress={() => {
-              const url = `https://www.10000recipe.com/recipe/${manId}`;
-              Linking.openURL(url);
-            }}
-          >
-            <Image
-              style={{
-                width: 200,
-                height: 50,
-                overflow: "hidden",
-              }}
-              source={require("../assets/ManRecipeButton.png")}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            marginTop: 10,
+          }}
+        >
+          <View style={{ flexDirection: "column" }}>
+            <Text style={[text.h3, { textAlign: "center", marginBottom: 10 }]}>
+              조리시간
+            </Text>
+            <Tag
+              textColor={colors.black}
+              color={colors.primary}
+              size={20}
+              value={`${cookTime}분 이내`}  // '분'을 cookTime 값 뒤에 추가
+              style={{ width: 100 }}
             />
-          </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: "column" }}>
+            <Text style={[text.h3, { textAlign: "center", marginBottom: 10 }]}>
+              난이도
+            </Text>
+            <Tag
+              textColor={colors.black}
+              color={colors.primary}
+              size={20}
+              value={levelText[level]}
+              style={{ width: 100 }}
+            />
+          </View>
         </View>
+      </View>
+      <View style={[center, padding.vertical(16)]}>
+        <TouchableOpacity
+          onPress={() => {
+            const url = `https://www.10000recipe.com/recipe/${manId}`;
+            Linking.openURL(url);
+          }}
+        >
+          <Image
+            style={{
+              width: 200,
+              height: 50,
+              overflow: "hidden",
+            }}
+            source={require("../assets/ManRecipeButton.png")}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
