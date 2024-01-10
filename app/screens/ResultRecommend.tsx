@@ -42,7 +42,7 @@ export const ResultRecommend: React.FC<RootStackScreenProps<"MyKitchenState">> =
 
   const fetchRecipes = () => {
     const ingredientIds = userIngredients.map(ingredient => ingredient.ingredientID);
-    getRequest(`recommend?ingredient_ids=${ingredientIds.join(',')}`, setRecipes);
+    getRequest(`recommend/recommend?ingredient_ids=${ingredientIds.join(',')}`, setRecipes);
   };
 
   const handleSearch = () => {
