@@ -72,6 +72,7 @@ export const CommunityMain: React.FC<HomeTabScreenProps<"Community">> = ({
             console.log(recipe.manId);
             return (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   recipe.manId
                     ? navigation.navigate("ManRecipe", {

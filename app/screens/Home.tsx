@@ -86,6 +86,7 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {myIngredients.length > 0 ? (
               myIngredients.map((ingredient, index) => (
+                
                 <Tag
                   key={index}
                   value={ingredient.ingredientName}
@@ -129,6 +130,7 @@ export const Home: React.FC<HomeTabScreenProps<"Home">> = ({ navigation }) => {
             {likeRecipes.length > 0 ? (
               likeRecipes.map((recipe, index) => (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => {
                     recipe.manId
                       ? navigation.navigate("ManRecipe", {
