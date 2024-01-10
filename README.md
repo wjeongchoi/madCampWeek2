@@ -135,7 +135,7 @@ Download HERE!
 전체 레시피를 추천받을 수 있습니다.
 만개의 레시피 API를 이용하여 
 메뉴이름을 통해 레시피를 검색할 수 있습니다.
-~사용된 재료를 통해 레시피를 검색할 수 있습니다.~
+사용된 재료와 조리도구를 이용해 레시피를 검색할 수 있습니다.
 
 ### 4. Recommend
 <img src="https://github.com/wjeongchoi/madCampWeek2/assets/144689054/3ac4d9cf-75bb-4413-953a-315ac8c87414"  width="300" height="650"  />
