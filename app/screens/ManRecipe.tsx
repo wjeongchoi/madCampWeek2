@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import { text, colors } from "../styles";
+import { text, colors, padding, safe, center } from "../styles";
 import { getRequest } from "../axios";
 import { EllipticalText, Tag, RequestButton } from "../components";
 import { Ingredient } from "../types/ingredient";
@@ -64,14 +64,12 @@ export const ManRecipe = ({ route }) => {
     <View>
       <AppHeader title={"만개의 레시피"} />
 
-      <SafeAreaView
-        style={{ alignItems: "center", flexDirection: "column", padding: 10 }}
-      >
-        <ScrollView style={{ margin: 10 }}>
+      <View style={[padding.horizontal(safe.horizontal)]}>
+        <View style={{ margin: 10 }}>
           <EllipticalText numberOfLines={1} fontSize={24} text={title} />
           <EllipticalText numberOfLines={2} fontSize={16} text={subTitle} />
           <Text style={[text.h3]}>필요한 재료</Text>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {recipeIngredients.map((ingredient: Ingredient, index: number) => {
               return (
                 <Tag
@@ -92,7 +90,7 @@ export const ManRecipe = ({ route }) => {
           </View>
           {/* 내 냉장고에 재료가 있는지 여부에 따라 bool을 리턴하는 api 필요*/}
           <Text style={[text.h3]}>필요한 조리도구</Text>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {recipeCookers.map((cooker: Cooker, index: number) => {
               return (
                 <Tag
@@ -149,24 +147,25 @@ export const ManRecipe = ({ route }) => {
               />
             </View>
           </View>
-        </ScrollView>
-        <TouchableOpacity
-          onPress={() => {
-            const url = `https://www.10000recipe.com/recipe/${manId}`;
-            Linking.openURL(url);
-          }}
-        >
-          <Image
-            style={{
-              width: 200,
-              height: 50,
-              overflow: "hidden",
+        </View>
+        <View style={[center]}>
+          <TouchableOpacity
+            onPress={() => {
+              const url = `https://www.10000recipe.com/recipe/${manId}`;
+              Linking.openURL(url);
             }}
-            source={require("../assets/ManRecipeButton.png")}
-          />
-        </TouchableOpacity>
-
-      </SafeAreaView>
+          >
+            <Image
+              style={{
+                width: 200,
+                height: 50,
+                overflow: "hidden",
+              }}
+              source={require("../assets/ManRecipeButton.png")}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
