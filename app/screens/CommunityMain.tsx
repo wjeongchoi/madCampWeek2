@@ -8,7 +8,7 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
-import { text } from "../styles";
+import { padding, safe, text } from "../styles";
 import { HomeTabScreenProps } from "../navigation/types";
 import { getRequest } from "../axios";
 import { Recipe } from "../types/recipe";
@@ -34,7 +34,7 @@ export const CommunityMain: React.FC<HomeTabScreenProps<"Community">> = ({
   return (
     <View>
       <AppHeader title={"유저 레시피"} />
-      <View style={{ marginTop: 30, marginLeft: 10 }}>
+      <View style={[padding.horizontal(safe.horizontal)]}>
 
         <RequestButton
           onPress={() => {
@@ -43,7 +43,6 @@ export const CommunityMain: React.FC<HomeTabScreenProps<"Community">> = ({
           size={20}
           text="내 레시피 등록하기"
           iconName="restaurant-sharp"
-          style={{ marginHorizontal: 30 }}
         />
 
         <SafeAreaView style={{ marginTop: 10 }}>
@@ -69,9 +68,6 @@ export const CommunityMain: React.FC<HomeTabScreenProps<"Community">> = ({
                 >
                   <ExpandedPreview
                     recipe={recipe}
-                    imgPath={
-                      "https://podicmaster.cdn3.cafe24.com/artworks/0094.png"
-                    }
                   />
                 </TouchableOpacity>
               );

@@ -20,6 +20,7 @@ import {
   padding,
   safe,
   colors,
+  center,
 } from "../styles";
 import { HomeTabScreenProps } from "../navigation/types";
 import { UserData } from "../types/user"; // Assuming Recipe is a type defined in your types
@@ -178,25 +179,41 @@ export const MyPageMain: React.FC<HomeTabScreenProps<"MyPage">> = ({
           iconName="restaurant-sharp"
           style={{ marginHorizontal: 30 }}
         />
-        <Text style={[text.h3, justify.start]}>좋아요한 레시피</Text>
-        <ScrollView style={[row]} horizontal={true}>
-          {likeRecipes.map((recipe, index) => (
-            <VerticalRecipePreview
-              key={index}
-              recipe={recipe}
-              imgSrc={recipe.imgSrc}
-            />
-          ))}
-        </ScrollView>
+        <View style={[padding.vertical(8)]}>
+          <Text style={[text.h3, justify.start]}>좋아요한 레시피</Text>
+          <ScrollView style={[row]} horizontal={true}>
+            {likeRecipes.length > 0 ? (
+              likeRecipes.map((recipe, index) => (
+                <VerticalRecipePreview
+                  key={index}
+                  recipe={recipe}
+                  imgSrc={recipe.imgSrc}
+                />
+              ))
+            ) : (
+              <Text style={[text.btn1, { color: colors.gray400 }]}>
+                ! 아직 비어있어요 !
+              </Text>
+            )}
+          </ScrollView>
+        </View>
 
-        <Text style={[text.h3, justify.start]}>내가 올린 레시피</Text>
-        {myRecipes.map((recipe, index) => (
-          <HorizontalRecipePreview
-            key={index}
-            recipe={recipe}
-            imgPath={recipe.imgSrc}
-          />
-        ))}
+        <View style={[padding.vertical(8)]}>
+          <Text style={[text.h3, justify.start]}>내가 올린 레시피</Text>
+          {myRecipes.length > 0 ? (
+            myRecipes.map((recipe, index) => (
+              <HorizontalRecipePreview
+                key={index}
+                recipe={recipe}
+                imgPath={recipe.imgSrc}
+              />
+            ))
+          ) : (
+            <Text style={[text.btn1, { color: colors.gray400 }]}>
+              ! 아직 비어있어요 !
+            </Text>
+          )}
+        </View>
       </ScrollView>
     </View>
   );

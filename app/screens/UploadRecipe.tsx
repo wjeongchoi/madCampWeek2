@@ -99,6 +99,7 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
                   isSelected={false}
                   color={colors.primary}
                   style={{ width: 100 }}
+                  textColor={""}
                 />
               );
             })}
@@ -145,18 +146,13 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
                 }}
               >
                 <Picker.Item
-                  label="난이도"
+                  label="누구나"
                   value="1"
                   style={{ fontSize: 12 }}
                 />
-                <Picker.Item
-                  label="누구나"
-                  value="2"
-                  style={{ fontSize: 12 }}
-                />
-                <Picker.Item label="초급" value="3" style={{ fontSize: 12 }} />
-                <Picker.Item label="중급" value="4" style={{ fontSize: 12 }} />
-                <Picker.Item label="상급" value="5" style={{ fontSize: 12 }} />
+                <Picker.Item label="초급" value="2" style={{ fontSize: 12 }} />
+                <Picker.Item label="중급" value="3" style={{ fontSize: 12 }} />
+                <Picker.Item label="상급" value="4" style={{ fontSize: 12 }} />
               </Picker>
             </View>
             <View style={{ flexDirection: "column" }}>
@@ -197,7 +193,26 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
             </View>
           </View>
         </View>
-        <Button title="저장하기" onPress={addRecipe} />
+        <TouchableOpacity
+          style={[
+            {
+              borderRadius: 10,
+              backgroundColor: colors.primary,
+              padding: 10,
+              marginVertical: 10,
+              justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
+              width: 120,
+              height: 50,
+            },
+          ]}
+          onPress={addRecipe}
+        >
+          <Text style={[text.sub1, { color: colors.primaryDark }]}>
+            저장하기
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
