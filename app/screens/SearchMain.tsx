@@ -35,8 +35,11 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({
   };
 
   const handleSearch = () => {
+    const encodedRecipeName = encodeURIComponent(searchText);
+    console.log('1', searchText);
+    console.log('2', encodedRecipeName);
     getRequest(
-      `search?name=${searchText}`,
+      `recipes/search?name=${searchText}`,
       (data) => {
         setRecipes([...data]);
       },
@@ -44,6 +47,7 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({
         console.error('Search error:', error);
       }
     );
+    setSearchText('');
   };
 
   return (
@@ -51,6 +55,7 @@ export const SearchMain: React.FC<HomeTabScreenProps<"Search">> = ({
       <AppHeader title={"레시피 검색"} />
       <View style={[padding.horizontal(safe.horizontal), padding.top(16)]}>
         <SearchBar
+          onPress={handleSearch}
           style={{ width: 300 }}
           size={20}
           value={searchText}

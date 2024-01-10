@@ -6,6 +6,7 @@ export const getRequest = async (
   handleSuccess: (arg0: any) => void,
   handleError?: (error: any) => void
 ) => {
+  console.log(`${API_URL}/${url}`);
   await axios
     .get(`${API_URL}/${url}`, {
       withCredentials: true,

@@ -11,26 +11,14 @@ import { getRequest } from '../axios'; // Adjust the import path as needed
 
 interface SearchBarProps {
   placeholder?: string;
+  value: string;
+  onPress?: () => void;
+  onChangeText?: (text: string) => void;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
-  placeholder,
+  placeholder, value, onPress, onChangeText
 }) => {
-  const [searchValue, setSearchValue] = useState('');
-
-  const handleSearch = () => {
-    getRequest(
-      `search?name=${searchValue}`,
-      (data) => {
-        console.log('Search results:', data);
-        // Handle the search results as needed
-      },
-      (error) => {
-        console.error('Search error:', error);
-      }
-    );
-  };
-
   return (
     <View>
         <View
@@ -44,11 +32,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             },
           ]}
         >
-          <Ionicons name="search" color={colors.gray500} size={20} />
+          <TouchableOpacity onPress={onPress}>
+            <Ionicons name="search" color={colors.gray500} size={20} />
+
+          </TouchableOpacity>
+          
           <TextInput
             style={[margin.left(6), text.btn2, { color: colors.gray500 }, {flex:1}]}
-            onChangeText={setSearchValue}
-            value={searchValue}
+            onChangeText={onChangeText}
+            value={value}
+            onSubmitEditing={onPress}
             placeholder={placeholder || '레시피를 검색해보세요'}
           />
         </View>
