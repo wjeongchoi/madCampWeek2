@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, TextInput } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { border, colors, padding, safe, text } from "../styles";
@@ -40,14 +40,13 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
   };
 
   const addRecipe = () => {
-    const sendDate = {
+    const sendData = {
       title: title,
       subTitle: subTitle,
       level: level,
       cookTime: cookTime,
     };
-    postRequest("recipes", sendDate, (responseData) => {
-      console.log(responseData, "ddd");
+    postRequest("recipes/", sendData, (responseData) => {
       navigation.navigate("HomeTab");
     }, (error) => {
       console.error(error);
@@ -182,7 +181,7 @@ export const UploadRecipe: React.FC<RootStackScreenProps<"UploadRecipe">> = ({
                   style={{ fontSize: 12 }}
                 />
                 <Picker.Item
-                  label="70분이내"
+                  label="60분이내"
                   value="4"
                   style={{ fontSize: 12 }}
                 />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, TextInput } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { colors, padding, round, text, gap, safe } from "../styles";
 import { RootStackScreenProps } from "../navigation/types";
 import { AppHeader, Tag } from "../components";
@@ -33,16 +33,20 @@ export const MyKitchenState: React.FC<
   
   useEffect(() => {
     getRequest(`users/${userID}/ingredients`, (responseData) => {
-      console.log(responseData);
+      const newIngredients = []
       responseData.map((ingredient : Ingredient) => {
-        setIngredients([...ingredients, ingredient.ingredientName]);
+        newIngredients.push(ingredient.ingredientName);
+        
       }) 
-      
+      setIngredients([...newIngredients]);
     });
     getRequest(`users/${userID}/cookers`, (responseData) => {
+      const newCookers = []
       responseData.map((cooker : Cooker) => {
-        setCookers([...cookers, cooker.cookerName]);
+        newCookers.push(cooker.cookerName);
+        
       }) 
+      setCookers([...newCookers]);
     });
   }, [userID])
 
@@ -61,14 +65,12 @@ export const MyKitchenState: React.FC<
   };
 
   const deleteCookerTag = (index: number) => {
-
     const cooker : Cooker = cookers[index];
-
     const newCookers = [...cookers];
     newCookers.splice(index, 1);
     setCookers(newCookers);
 
-    deleteRequest(`users/${userID}/cooker/${cooker.cookerName}`, (responseData) => {
+    deleteRequest(`users/${userID}/cooker/${cooker}`, (responseData) => {
       console.log(responseData);
     });
   };
@@ -95,7 +97,7 @@ export const MyKitchenState: React.FC<
     const newIngredients = [...ingredients];
     newIngredients.splice(index, 1);
     setIngredients(newIngredients);
-    deleteRequest(`users/${userID}/ingredient/${ingredient.ingredientName}`, (responseData) => {
+    deleteRequest(`users/${userID}/ingredient/${ingredient}`, (responseData) => {
       console.log(responseData);
     });
   };
@@ -115,18 +117,19 @@ export const MyKitchenState: React.FC<
             ]}
             placeholder="2가지 이상의 재료는 띄어쓰기로 구분해 주세요"
             value={ingredientInput}
-            onChangeText={(ingredient) => addIngradiantTag(ingredient)}
+            onChangeText={(text) => addIngradiantTag(text)}
           />
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {ingredients.map((ingredient: string, index : number) => {
               return (
                 <Tag
+                  key={index}
                   onPress={() => {deleteIngredientTag(index)}}
                   value={ingredient}
                   size={20}
                   color={colors.primary}
                   style={{ width: 100 }}
-                  textColor={""}
+                  textColor={colors.primaryDark}
                   canDeleted
                 />
               );
@@ -144,18 +147,19 @@ export const MyKitchenState: React.FC<
             ]}
             placeholder="2가지 이상의 도구는 띄어쓰기로 구분해 주세요"
             value={cookerInput}
-            onChangeText={(cooker) => addCookerTag(cooker)}
+            onChangeText={(text) => addCookerTag(text)}
           />
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {cookers.map((cooker : string, index : number) => {
               return (
                 <Tag
+                  key={index}
                   onPress={() => {deleteCookerTag(index)}}
                   value={cooker}
                   size={20}
                   color={colors.primary}
                   style={{ width: 100 }}
-                  textColor={""}
+                  textColor={colors.primaryDark}
                   canDeleted
                 />
               );
