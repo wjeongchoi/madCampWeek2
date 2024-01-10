@@ -45,59 +45,66 @@ Download HERE!
 ## D. API 정보
 
 ### GET
+
 | url | 설명 |
 | --- | --- |
-| auth/url | 카카오 로그인 창 url 가져오기 |
-| auth/kakao | kakao로그인을 통해 토큰 가져오기 |
-| users/{user_id}/cooker/ | 내 조리도구들 가져오기 |
+| auth/kakao | 카카오 로그인 창 url 가져오기 |
+| auth/kakao/callback | kakao로그인을 통해 토큰 가져오기 |
+| users/ | 유저들 다 가져오기 |
+| users/login | 이메일/패스워드 기반의 로그인 요청 |
+| user/{user_id} | 유저 정보 모두 가져오기 |
+| users/{user_id}/cookers/ | 내 조리도구들 가져오기 |
 | users/{user_id}/ingredients | 내 재료들 가져오기(냉장고) |
 | users/{user_id}/like/recipes | 좋아요한 레시피 가져오기 |
 | users/{user_id}/recipes | 레시피 id로 가져오기 |
-| users/ | 유저들 다 가져오기 |
-| user/{user_id} | 유저 정보 가져오기 |
 | recipes/ | 레시피 다 가져오기 |
 | recipes/{recipe_id} | 레시피 가져오기 |
 | recipes/{recipe_Id}/details | 레시피에 해당하는 디테일 가져오기 |
 | recipes/{recipe_id}/cookers | 레시피에 사용된 조리도구들 가져오기 |
 | recipes/{recipe_Id}/ingredients | 레시피 에 사용된 재료들 가져오기 |
+| recipes/search | 이름 기반 레시피 검색 |
+| recipes/recommend | 재료/조리도구 기반 레시피 검색 |
 | ingredients/ | 재료 전부 가져오기 |
 | ingredients/{ingredient_name} | 재료 가져오기 |
 | cookers/ | 조리도구 전부 가져오기 |
 | cookers/{cooker_name} | 조리도구 가져오기 |
-| recipes/search | 레시피 검색 |
 
 ### POST
+
 | url | 설명 |
 | --- | --- |
-| user/ | 유저 생성 |
+| users/ | 유저 생성 |
 | users/{user_id}/ingredients | 유저의 재료 추가 |
 | users/{user_id}/cooker | 유저의 조리도구 추가 |
 | users/{user_id}/like/recipe | 유저의 좋아요 레시피 추가 |
+| users/{user_id}/recipe | 유저의 레시피 추가 |
 | recipes/ | 레시피 추가 |
 | recipes/{recipe_id}/detail | 레시피 디테일 추가 |
 | ingredients/ | 재료 추가 |
 | cookers/ | 조리도구 추가 |
-| users/{user_id}/recipe | 유저의 레시피 추가 |
 
 ### PUT
+
 | url | 설명 |
 | --- | --- |
-| recipes/{recipe_id}/detail | 레시피 detail 수정 |
-| recipes/{recipe_id} | 레시피 수정 |
+| uses/{user_id} | 유저 정보 수정 |
+| recipes/{recipe_id} | 레시피 정보 수정 |
+| recipes/{recipe_id}/{detailRecipe_id} | 레시피 디테일 수정 |
 
 ### DELETE
 
 | url | 설명 |
 | --- | --- |
-| recipes/{recipe_id} | 레시피 삭제 |
-| recipes/{detail_id}/detail | 레시피 디테일 삭제 |
-| ingredients/{ingredient_name} | 재료 삭제 |
-| cookers/{cooker_name} | 조리도구 삭제 |
 | users/{user_id} | 유저 삭제 |
 | users/{user_id}/ingredient/{ingredient_name} | 유저의 재료 삭제 |
 | users/{user_id}/cooker/{cooker_name} | 유저의 조리도구 삭제 |
+| recipes/{recipe_id} | 레시피 삭제 |
+| recipes/details/{detail_id} | 레시피 디테일 삭제 |
+| ingredients/{ingredient_name} | 재료 삭제 |
+| cookers/{cooker_name} | 조리도구 삭제 |
 |  | 레시피의 조리도구 삭제 |
 |  | 레시피의 재료 삭제 |
+
 
 ## E. 어플리케이션 소개
 자취생들을 위한 레시피 추천 어플리케이션
