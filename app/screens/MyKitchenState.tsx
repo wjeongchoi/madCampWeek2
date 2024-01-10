@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button, TextInput } from "react-native";
 import { colors, padding, round, text, gap, safe } from "../styles";
 import { RootStackScreenProps } from "../navigation/types";
 import { AppHeader, Tag } from "../components";
+import { postRequest, getRequest, deleteRequest} from "../axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Cooker } from "../types/cooker";
+import { Ingredient } from "../types/ingredient";
 
 export const MyKitchenState: React.FC<
   RootStackScreenProps<"MyKitchenState">
@@ -11,12 +15,62 @@ export const MyKitchenState: React.FC<
   const [cookerInput, setCookerInput] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [ingredientInput, setIngredientInput] = useState("");
+  const [userID, setUserID] = useState("");
+
+  useEffect(() => {
+    const fetchUserID = async () => {
+      try {
+        const storedUserID = await AsyncStorage.getItem("userID");
+        if (storedUserID != null) {
+          setUserID(storedUserID);
+        }
+      } catch (e) {
+        // error reading value
+      }
+    };
+    fetchUserID();
+  }, []);
+  
+  useEffect(() => {
+    getRequest(`users/${userID}/ingredients`, (responseData) => {
+      console.log(responseData);
+      responseData.map((ingredient : Ingredient) => {
+        setIngredients([...ingredients, ingredient.ingredientName]);
+      }) 
+      
+    });
+    getRequest(`users/${userID}/cookers`, (responseData) => {
+      responseData.map((cooker : Cooker) => {
+        setCookers([...cookers, cooker.cookerName]);
+      }) 
+    });
+  }, [userID])
+
   const addCookerTag = (tag: string) => {
     setCookerInput(tag);
     if (tag.includes(" ")) {
       setCookers([...cookers, tag]);
       setCookerInput("");
     }
+    const data = {
+      "cookerName": tag
+    };
+    postRequest(`users/${userID}/cooker`, data, (responseData) => {
+      console.log(responseData);
+    });
+  };
+
+  const deleteCookerTag = (index: number) => {
+
+    const cooker : Cooker = cookers[index];
+
+    const newCookers = [...cookers];
+    newCookers.splice(index, 1);
+    setCookers(newCookers);
+
+    deleteRequest(`users/${userID}/cooker/${cooker.cookerName}`, (responseData) => {
+      console.log(responseData);
+    });
   };
 
   const addIngradiantTag = (tag: string) => {
@@ -25,7 +79,27 @@ export const MyKitchenState: React.FC<
       setIngredients([...ingredients, tag]);
       setIngredientInput("");
     }
+    const data = {
+      "ingredientName": tag
+    };
+    postRequest(`users/${userID}/ingredients`, data, (responseData) => {
+      console.log(responseData);
+    }, (error) => {
+      console.error(error);
+    });
   };
+
+  const deleteIngredientTag = (index: number) => {
+    const ingredient : Ingredient = ingredients[index];
+
+    const newIngredients = [...ingredients];
+    newIngredients.splice(index, 1);
+    setIngredients(newIngredients);
+    deleteRequest(`users/${userID}/ingredient/${ingredient.ingredientName}`, (responseData) => {
+      console.log(responseData);
+    });
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <AppHeader title={"마이페이지"} />
@@ -44,22 +118,16 @@ export const MyKitchenState: React.FC<
             onChangeText={(ingredient) => addIngradiantTag(ingredient)}
           />
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
-            {ingredients.map((ingredient) => {
+            {ingredients.map((ingredient: string, index : number) => {
               return (
                 <Tag
-                  onPress={() => {
-                    console.log("state changed");
-                  }}
+                  onPress={() => {deleteIngredientTag(index)}}
                   value={ingredient}
-                  onDeletePress={() => {
-                    console.log("delete");
-                  }}
                   size={20}
-                  isSelected={false}
                   color={colors.primary}
                   style={{ width: 100 }}
                   textColor={""}
-                  canDeleted={true}
+                  canDeleted
                 />
               );
             })}
@@ -79,22 +147,16 @@ export const MyKitchenState: React.FC<
             onChangeText={(cooker) => addCookerTag(cooker)}
           />
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
-            {cookers.map((cooker) => {
+            {cookers.map((cooker : string, index : number) => {
               return (
                 <Tag
-                  onPress={() => {
-                    console.log("state changed");
-                  }}
+                  onPress={() => {deleteCookerTag(index)}}
                   value={cooker}
-                  onDeletePress={() => {
-                    console.log("delete");
-                  }}
                   size={20}
-                  isSelected={false}
                   color={colors.primary}
                   style={{ width: 100 }}
                   textColor={""}
-                  canDeleted={true}
+                  canDeleted
                 />
               );
             })}
